@@ -11,7 +11,7 @@
 #include "selection.h"
 int main() {
     int *vet;
-    int tam, metodoOrdenacao;
+    int tam, metodoOrdenacao, aux;
     char nomeArq[30];
     FILE *arq;
     
@@ -22,5 +22,34 @@ int main() {
         printf("\nErro ao abrir o arquivo \n");
         return 1;
     }
+    printf("Digite a quantidade de elementos do arquivo : ");
+    scanf("%d", &tam);
+    vet = (int*)malloc(tam*sizeof(int));
+    aux =  lerArquivo(vet, arq, tam);
+    fclose(arq);
+    if (aux == 1){
+        printf("\nTamanho do arquivo incompativel com o tamanho do vetor alocado\n");
+        printf("\nO programa será encerrado\n");
+        return 1;
+    }
+    
+    //MENU
+    printf("\nAlgoritmos de Ordenacao\n");
+    printf("\n 1 - Bolha");
+    printf("\n 2 - Bolha Inteligente");
+    printf("\n 3 - Selecao");
+    printf("\n Digite a opcao desejada : ");
+    scanf("%d", &metodoOrdenacao);
+    
+    switch(metodoOrdenacao){
+        case 1:
+            bolha(vet, tam);
+        break
+    }
+
+    //escrever o vetor ordenado no arquivo
+    
+    return(0);
+
 }
 
