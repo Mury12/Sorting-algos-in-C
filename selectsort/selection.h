@@ -14,7 +14,8 @@
 #ifndef SELECTION_H
 #define SELECTION_H
 
-void sort(int v[], int size);
+void selectionSort(int v[], int size);
+void insertionSort(int v[], int size);
 void printv(int v[], int size);
 
 #endif /* SELECTION_H */
