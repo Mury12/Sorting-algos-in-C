@@ -9,7 +9,7 @@
  * @param v
  * @param size
  */
-void sort(int v[], int size)
+void selectionSort(int v[], int size)
 {
     int j=0, l, i=0, aux;
         
@@ -28,8 +28,26 @@ void sort(int v[], int size)
         v[j] = aux;
 
     }
+        printf("\n Ordered by selection Sort");
+
     
-    
+}
+
+void insertionSort(int v[], int size) {
+    int aux, i, j;
+
+    for (i = 1; i < size; i++) {
+        j=i-1;
+        aux = v[i];
+        while(j>=0 && aux< v[j]){
+            v[j+1] = v[j];
+            j--;
+        }
+        v[j+1] = aux;
+
+    }
+    printf("\n Ordered by insertion Sort");
+
 }
 
 void printv(int v[], int size)
