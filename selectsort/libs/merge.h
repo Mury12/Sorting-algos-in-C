@@ -5,18 +5,17 @@
  */
 
 /* 
- * File:   selection.h
+ * File:   INSERTION.h
  * Author: aluno
  *
  * Created on 18 de Março de 2019, 13:57
  */
 
-#ifndef SELECTION_H
-#define SELECTION_H
+#ifndef MERGE_H
+#define MERGE_H
 
-void selectionSort(int v[], int size);
-void insertionSort(int v[], int size);
-void printv(int v[], int size);
+void merge(int v[], int left, int mid, int right);
+void mergeSort(int v[], int left, int right);
 
-#endif /* SELECTION_H */
+#endif /* MERGE_H */
 

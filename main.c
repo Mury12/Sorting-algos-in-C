@@ -44,7 +44,7 @@ int main() {
     switch(metodoOrdenacao){
         case 1:
             bolha(vet, tam);
-        break
+        break;
     }
 
     //escrever o vetor ordenado no arquivo

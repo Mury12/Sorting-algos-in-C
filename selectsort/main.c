@@ -13,7 +13,12 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "selection.h"
+#include "libs/fileManager.h"
+#include "libs/utils.h"
+#include "libs/selection.h"
+#include "libs/insertion.h"
+#include "libs/merge.h"
+#include "libs/quicksort.h"
 #define null NULL
 #define true 1
 #define false 0
@@ -22,13 +27,13 @@
  */
 int main() 
 {
-    int v[5] = {5, 4, 3, 2, 1};
+    int v[] = {5, 4, 3, 2, 1, 10, 98, 98, 31, 56, 97, 1521, 231, 2, 0};
+    int vsize = sizeof(v)/sizeof(int);
+    printv(v, vsize);
     
-    printv(v, 5);
+    quickSort(v, 0, vsize);
     
-    sort(v,5);
-    
-    printv(v, 5);
+    printv(v, vsize);
 
     
     return true;
