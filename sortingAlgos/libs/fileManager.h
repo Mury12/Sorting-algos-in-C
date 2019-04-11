@@ -1,22 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   INSERTION.h
- * Author: aluno
- *
- * Created on 18 de Março de 2019, 13:57
- */
-
 #ifndef FILEMANAGER_H
 #define FILEMANAGER_H
 
-FILE read();
-void write();
-int createRandomValuesFile();
+typedef struct Array{
+    int *v, size;
+}Array;
+
+int count(char filename[]);
+int read(int *v, char filename[]);
+int write(char filename[]);
+int createRandomValuesFile(char filename[]);
 
 #endif /* FILEMANAGER_H */
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 #include "selection.h"
 #define null NULL
 #define true 1
@@ -26,6 +27,8 @@ void selectionSort(int v[], int size)
         aux = v[l];
         v[l] = v[j];
         v[j] = aux;
+
+        swap(&v[l], &v[j]);
 
     }
         printf("\n Ordered by selection Sort");
