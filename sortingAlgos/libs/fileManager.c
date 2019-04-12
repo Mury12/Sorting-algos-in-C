@@ -92,7 +92,7 @@ int read(int * v, char filename[40])
 
 int write(int *v, char filename[])
 {
-
+    
     return true;
 }
 
