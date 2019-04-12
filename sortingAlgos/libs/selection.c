@@ -24,14 +24,7 @@ void selectionSort(int v[], int size)
             }
             
         }
-        aux = v[l];
-        v[l] = v[j];
-        v[j] = aux;
-
         swap(&v[l], &v[j]);
 
-    }
-        printf("\n Ordered by selection Sort");
-
-    
+    }    
 }

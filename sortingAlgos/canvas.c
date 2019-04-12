@@ -5,6 +5,7 @@
 #include "canvas.h"
 #include "libs/utils.h"
 #include "libs/fileManager.h"
+#include "libs/bubbles.h"
 #include "libs/selection.h"
 #include "libs/insertion.h"
 #include "libs/merge.h"
@@ -16,29 +17,7 @@
 
 int start()
 {
-    printf("\n\n");
-    printf("\t-------------------------------\n");
-    printf("\t----ALGORITMOS DE ORDENACAO----\n");
-    printf("\t-------------------------------\n");
-    
-    printf("\n\n\t ESCOLHA UMA OPCAO: \n\n");
-
-    printf("\t-------------------------------\n");
-    printf("\t-----------ITERATIVOS----------\n");
-    printf("\t-------------------------------\n");
-
-    printf("\t 1 - BUBBLE SORT \n");
-    printf("\t 2 - SMART BUBBLE \n");
-    printf("\t 3 - SELECTION SORT \n");
-    printf("\t 4 - INSERTION SORT \n\n");
-    
-    printf("\t-------------------------------\n");
-    printf("\t-----------RECURSIVOS----------\n");
-    printf("\t-------------------------------\n");
-
-    printf("\t 5 - MERGE SORT \n");
-    printf("\t 6 - QUICK SORT \n");
-    printf("\t 7 - QUICK SORT DOIS PIVOS \n\n");
+    showMenu();
 
     return body();
 }
@@ -89,9 +68,11 @@ int body()
 
     read(v, filename);
     
-    return sort(choice, v, size);
-
-    printf("\n\nARQUIVO ORDENADO A PARTIR DO ALGORITMO %s\n\n", mobs[choice-1]);
+    if(sort(choice, v, size)){
+        printf("\n\nARQUIVO ORDENADO A PARTIR DO ALGORITMO %s\n\n", mobs[choice-1]);
+        return true;
+    }
+    return false;
 
 }
 
@@ -101,10 +82,10 @@ int sort(int choice, int * v, int size)
         switch(choice){
             
             case 1:
-
+                bubbleSort(v, size);
                 break;
             case 2:
-
+                smartBubble(v, size);
                 break;
             case 3:
                 selectionSort(v, size);
@@ -127,4 +108,33 @@ int sort(int choice, int * v, int size)
     printv(v, size);
 
 return true;
+}
+
+void showMenu()
+{
+
+    
+    printf("\n\n");
+    printf("\t--------------------------------------------------------------\n");
+    printf("\t-------------------ALGORITMOS DE ORDENACAO--------------------\n");
+    printf("\t--------------------------------------------------------------\n");
+    printf(  "-------------------------------\n");
+
+    printf("\t-----------ITERATIVOS----------");
+    printf(  "-----------RECURSIVOS----------\n");
+
+    printf("\t-------------------------------");
+    printf(  "-------------------------------\n");
+
+    printf("\t\t 1 - BUBBLE SORT ");
+    printf("\t|\t 5 - MERGE SORT \n");
+    printf("\t\t 2 - SMART BUBBLE ");
+    printf("\t|\t 6 - QUICK SORT \n");
+    printf("\t\t 3 - SELECTION SORT ");
+    printf("\t|\t 7 - QUICK SORT 2 PIVOS\n");
+    printf("\t\t 4 - INSERTION SORT  \n\n");
+    printf("\t--------------------------------------------------------------\n");
+    printf("\n\n\t ESCOLHA UMA OPCAO: ");
+
+
 }

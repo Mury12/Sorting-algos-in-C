@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "selection.h"
+#include "insertion.h"
 #define null NULL
 #define true 1
 #define false 0
@@ -18,6 +18,4 @@ void insertionSort(int v[], int size) {
         v[j+1] = aux;
 
     }
-    printf("\n Ordered by insertion Sort");
-
 }

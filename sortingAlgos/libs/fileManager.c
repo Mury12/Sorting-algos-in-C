@@ -101,7 +101,7 @@ int read(int * v, char filename[40])
 /**
  * Escreve dados em um arquivo de acordo com as opções.
  */
-int write(char filename[])
+int write(int *v, char filename[])
 {
 
     return true;
