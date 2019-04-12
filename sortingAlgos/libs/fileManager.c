@@ -8,10 +8,6 @@
 #define true 1
 #define false 0
 
-/**
- * Conta o número de elementos no arquivo, retornando o tamanho do vetor ideal.
- * @param filename nome do arquivo.
- */
 int count(char filename[])
 {
     /**
@@ -54,11 +50,7 @@ int count(char filename[])
     return size;
 
 }
-    /**
-     * Faz a leitura do arquivo de dados
-     * @param v vetor para preenchimento.
-     * @param filaname é nome do arquivo
-     */
+
 int read(int * v, char filename[40])
 {
     /**
@@ -98,20 +90,12 @@ int read(int * v, char filename[40])
     return true;
 }
 
-/**
- * Escreve dados em um arquivo de acordo com as opções.
- */
 int write(int *v, char filename[])
 {
 
     return true;
 }
 
-
-/**
- * Insere no arquivo @var filename valores aleatórios.
- * @param filename arquivo a ser escrito. 
- */ 
 int createRandomValuesFile(char filename[])
 {
     

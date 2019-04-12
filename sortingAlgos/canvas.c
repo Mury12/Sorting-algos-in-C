@@ -17,7 +17,7 @@
 
 int start()
 {
-    showMenu();
+    navigation();
 
     return body();
 }
@@ -56,7 +56,7 @@ int body()
     printf("\n Digite o nome do arquivo (default data.txt): ");
     scanf(" %s", filename);
 
-//    createRandomValuesFile(filename);
+    createRandomValuesFile(filename);
 
     size = count(filename);
     
@@ -68,6 +68,7 @@ int body()
 
     read(v, filename);
     
+    
     if(sort(choice, v, size)){
         printf("\n\nARQUIVO ORDENADO A PARTIR DO ALGORITMO %s\n\n", mobs[choice-1]);
         return true;
@@ -78,53 +79,61 @@ int body()
 
 int sort(int choice, int * v, int size)
 {
+        Data cmp;
+        cmp.changes=0;
+        cmp.cmp=0;
+        cmp.start = clock();
 
         switch(choice){
             
             case 1:
-                bubbleSort(v, size);
+                bubbleSort(v, size, &cmp);
                 break;
             case 2:
-                smartBubble(v, size);
+                smartBubble(v, size, &cmp);
                 break;
             case 3:
-                selectionSort(v, size);
+                selectionSort(v, size, &cmp);
                 break;
             case 4:
-                insertionSort(v, size);
+                insertionSort(v, size, &cmp);
                 break;
             case 5:
-                mergeSort(v, 0, size);
+                mergeSort(v, 0, size, &cmp);
                 break;
             case 6:
-                quickSort(v, 0, size);
+                quickSort(v, 0, size, &cmp);
                 break;
             case 7:
-                dualPivotQuickSort(v, 0, size);
+                dualPivotQuickSort(v, 0, size, &cmp);
                 break;
-            
         }
+        
+
+        cmp.end = clock();
+        cmp.diff = (double)(cmp.end - cmp.start);
+
 
     printv(v, size);
 
-return true;
+    printf("Comparações: %lld\tTrocas: %lld\tTamanho do Vetor: %d\n", cmp.cmp, cmp.changes, size);
+    printf("Tempo decorrido: %d ticks", (int)cmp.diff);
+    return true;
 }
 
-void showMenu()
+void navigation()
 {
 
     
     printf("\n\n");
-    printf("\t--------------------------------------------------------------\n");
-    printf("\t-------------------ALGORITMOS DE ORDENACAO--------------------\n");
-    printf("\t--------------------------------------------------------------\n");
-    printf(  "-------------------------------\n");
+    printf("\t|------------------------------------------------------------|\n");
+    printf("\t|                  ALGORITMOS DE ORDENACAO                   |\n");
+    printf("\t|------------------------------------------------------------|\n");
 
-    printf("\t-----------ITERATIVOS----------");
-    printf(  "-----------RECURSIVOS----------\n");
+    printf("\t|          ITERATIVOS           |");
+    printf(  "          RECURSIVOS        |\n");
 
-    printf("\t-------------------------------");
-    printf(  "-------------------------------\n");
+    printf("\t|------------------------------------------------------------|\n");
 
     printf("\t\t 1 - BUBBLE SORT ");
     printf("\t|\t 5 - MERGE SORT \n");
@@ -135,6 +144,5 @@ void showMenu()
     printf("\t\t 4 - INSERTION SORT  \n\n");
     printf("\t--------------------------------------------------------------\n");
     printf("\n\n\t ESCOLHA UMA OPCAO: ");
-
-
 }
+

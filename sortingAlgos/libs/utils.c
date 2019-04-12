@@ -1,17 +1,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
+
 #define null NULL
 #define true 1
 #define false 0
 
 
 
-/**
- * Prints an array
- * @param int v[] array
- * @param int size array size
- */
+
 void printv(int v[], int size)
 {
     int i;
@@ -23,14 +21,12 @@ void printv(int v[], int size)
         printf("\n\n");
 }
 
-/**
- * Swaps two values by reference
- * @param int *a pointer to the first val
- * @param int *b pointer to the second val
- */ 
-void swap(int *a, int *b)
+
+void swap(int *a, int *b, Data * cmp)
 {
     int aux = *a;
     *a = *b;
     *b = aux;
+
+    cmp->changes++;
 }

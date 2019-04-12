@@ -1,21 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   selection.h
- * Author: aluno
- *
- * Created on 18 de Março de 2019, 13:57
- */
-
 #ifndef SELECTION_H
 #define SELECTION_H
 
-void selectionSort(int v[], int size);
-void printv(int v[], int size);
+/**
+ * Ordena um vetor numérico pelo método da seleção.
+ * @param v é o vetor a ser ordenado
+ * @param size é o tamanho do vetor
+ * @param cmp é o ponteiro para a estrutura utilizada para contabilizar métricas.
+*/ 
+void selectionSort(int v[], int size, Data * cmp);
 
 #endif /* SELECTION_H */
 

@@ -10,7 +10,7 @@
  * @param v
  * @param size
  */
-void selectionSort(int v[], int size)
+void selectionSort(int v[], int size, Data * cmp)
 {
     int j=0, l, i=0, aux;
         
@@ -18,13 +18,13 @@ void selectionSort(int v[], int size)
         l = j;
         for(i=j+1; i<size; i++){
             
-            
             if(v[i] < v[l] && v[i] != v[l]){
                 l = i;
+                cmp->cmp++;
             }
             
         }
-        swap(&v[l], &v[j]);
-
+        swap(&v[l], &v[j], cmp);
+        
     }    
 }

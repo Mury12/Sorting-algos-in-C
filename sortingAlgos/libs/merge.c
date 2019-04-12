@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 #include "merge.h"
 #define null NULL
 #define true 1
 #define false 0
 
-void merge(int v[], int left, int mid, int right)
+void merge(int v[], int left, int mid, int right, Data * cmp)
 {
     int i, j, k;
     int lsize = mid - left + 1;
@@ -44,22 +45,23 @@ void merge(int v[], int left, int mid, int right)
 
     while(j < rsize){
         v[k] = r[j];
-        j++;k++;
+        j++;
+        k++;
     }
 
 }
 
-void mergeSort(int v[], int left, int right)
+void mergeSort(int v[], int left, int right, Data *cmp)
 {
     int mid = (left+right)/2;
 
     if(left < right){
 
 
-        mergeSort(v, left, mid);
-        mergeSort(v,mid+1, right);
+        mergeSort(v, left, mid, cmp);
+        mergeSort(v,mid+1, right, cmp);
 
-        merge(v, left, mid, right);
+        merge(v, left, mid, right, cmp);
 
     }
 }
