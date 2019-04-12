@@ -128,20 +128,20 @@ void navigation()
     printf("\n\n");
     printf("\t|------------------------------------------------------------|\n");
     printf("\t|                  ALGORITMOS DE ORDENACAO                   |\n");
-    printf("\t|------------------------------------------------------------|\n");
-
+    printf("\t|-------------------------------|----------------------------|\n");
     printf("\t|          ITERATIVOS           |");
-    printf(  "          RECURSIVOS        |\n");
+    printf(   "          RECURSIVOS        |\n");
 
-    printf("\t|------------------------------------------------------------|\n");
-
-    printf("\t\t 1 - BUBBLE SORT ");
-    printf("\t|\t 5 - MERGE SORT \n");
-    printf("\t\t 2 - SMART BUBBLE ");
-    printf("\t|\t 6 - QUICK SORT \n");
-    printf("\t\t 3 - SELECTION SORT ");
-    printf("\t|\t 7 - QUICK SORT 2 PIVOS\n");
-    printf("\t\t 4 - INSERTION SORT  \n\n");
+    printf("\t|-------------------------------|----------------------------|\n");
+    
+    printf("\t|     1 - BUBBLE SORT\t ");
+    printf("\t|     5 - MERGE SORT\t     |\n");
+    printf("\t|     2 - SMART BUBBLE\t ");
+    printf("\t|     6 - QUICK SORT\t     |\n");
+    printf("\t|     3 - SELECTION SORT ");
+    printf("\t|     7 - QUICK SORT 2 PIVOS |\n");
+    printf("\t|     4 - INSERTION SORT");
+    printf("\t|\t                     |\n");
     printf("\t--------------------------------------------------------------\n");
     printf("\n\n\t ESCOLHA UMA OPCAO: ");
 }

@@ -24,7 +24,7 @@ void selectionSort(int v[], int size, Data * cmp)
             }
             
         }
-        swap(&v[l], &v[j], cmp);
+        if(l!=j) swap(&v[l], &v[j], cmp);
         
     }    
 }

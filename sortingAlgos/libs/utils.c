@@ -7,9 +7,6 @@
 #define true 1
 #define false 0
 
-
-
-
 void printv(int v[], int size)
 {
     int i;
