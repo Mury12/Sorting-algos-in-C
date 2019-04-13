@@ -1,7 +1,7 @@
 
 #ifndef CANVAS_H
 #define CANVAS_H
-
+#include "libs/utils.h"
 /**
  * Inicia a aplicação e seus recursos.
  * @return true ou false
@@ -33,4 +33,13 @@ int sort(int choice, int *v, int size);
  */ 
 void navigation();
 
+/**
+ * 
+ */
+int profile();
+
+/**
+ * 
+ */ 
+void printProfilingData(char name[30], Data * cmp);
 #endif /* CANVAS_H */

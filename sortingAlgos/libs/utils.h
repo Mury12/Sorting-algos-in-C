@@ -13,8 +13,31 @@ struct Data{
      */ 
     long long int changes;
 
+    /**
+     * Tempos de início e fim de um único teste
+     */ 
     clock_t start, end;
-    double diff;
+
+    /**
+     * Vetor com o tamanho  dos vetores testados
+     */ 
+    int size[5];
+    /**
+     * Vetor com o total de comparações para cada tamanho de vetor
+     */ 
+    int cmpt[5];
+    /**
+     * Vetor com o total de trocas para cada tamanho de vetor
+     */ 
+    int tChanges[5];
+    /**
+     * Vetor com a média de tempo para cada tamanho de vetor
+     */ 
+    double diff[5];
+    /**
+     * Vetor com os tempos da execução de um único teste
+     */ 
+    double vdiff[30];
 };
 /**
  * Estrutura que armazena as métricas de desempenho dos algorítmos.
@@ -36,5 +59,12 @@ void printv(int v[], int size);
  * @param cmp é o ponteiro para a estrutura de armazenamento de métricas
  */ 
 void swap(int *a, int *b, Data * cmp);
-
+/**
+ * 
+ */
+void randomArray(int *v, int size);
+/**
+ * 
+ */
+double avg(double *v, int size); 
 #endif /* UTILS_H */

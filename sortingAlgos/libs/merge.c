@@ -16,9 +16,7 @@ void merge(int v[], int left, int mid, int right, Data * cmp)
 
     for (i=0; i<lsize; i++){
         l[i] = v[left+i];
-        printf("%d ",l[i]);
     }
-    printf("\n");
 
     for (i=0; i<rsize; i++){
         r[i] = v[mid+1+i];
@@ -27,15 +25,18 @@ void merge(int v[], int left, int mid, int right, Data * cmp)
     i = j = 0;
     k = left;
     
-    while(i < lsize && j < rsize){
+    while(i < lsize && j < rsize-1){
         if(l[i] <= r[j]){
             v[k] = l[i];
+            cmp->changes++;
             i++;
         }else{
             v[k] = r[j];
+            cmp->changes++;
             j++;
         }
         k++;
+        cmp->cmp++;
     }
 
     while(i < lsize){
@@ -56,7 +57,7 @@ void mergeSort(int v[], int left, int right, Data *cmp)
     int mid = (left+right)/2;
 
     if(left < right){
-
+        cmp->cmp++;
 
         mergeSort(v, left, mid, cmp);
         mergeSort(v,mid+1, right, cmp);

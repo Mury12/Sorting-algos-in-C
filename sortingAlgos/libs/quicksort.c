@@ -25,7 +25,7 @@ int arraySplit(int v[], int start, int end, Data * cmp)
     int pos = start;
     int i, aux;
     
-    for(i = start+1; i <= end; i++){
+    for(i = start+1; i < end; i++){
         if(v[i] < pivot){
             cmp->cmp++;
             pos++;
@@ -40,35 +40,36 @@ int arraySplit(int v[], int start, int end, Data * cmp)
     return pos;
 }
 
-void dualPivotQuickSort(int v[], int low, int high, Data *cmp)
+void dualPivotQuickSort(int v[], int left, int right, Data *cmp)
 {
-    if(low < high){
+    if(left < right){
         /**
-         * @var int lp is the left pivot
-         * @var int rp is the right pivot
+         * @var int lp é o pivô da esquerda
+         * @var int rp é o pivô da direita
          */
         int lp, rp;
 
-        rp = partition(v, low, high, &lp, cmp);
-        dualPivotQuickSort(v, low, lp-1, cmp);
+        rp = splitArray(v, left, right, &lp, cmp);
+        dualPivotQuickSort(v, left, lp-1, cmp);
         dualPivotQuickSort(v, lp+1, rp-1, cmp);
-        dualPivotQuickSort(v, rp+1, high, cmp);
+        dualPivotQuickSort(v, rp+1, right, cmp);
     }
 }
 
-int partition(int v[], int low, int high, int *lp, Data * cmp)
+int splitArray(int v[], int left, int right, int *lp, Data * cmp)
 {
     /**
-     * Swap the first and last elements if first is greater than the last element.
+     * Compara o primeiro e último elemento e os troca
      */ 
-    if(v[low] > v[high]){
-        swap(&v[low], &v[high], cmp);
+    if(v[left] > v[right]){
+        swap(&v[left], &v[right], cmp);
     }
+    cmp->cmp++;
 
     /**
      * @var int j é o indice do pivô da esquerda
      */
-    int j = low + 1;
+    int j = left + 1;
 
     /**
      * @var int g is the right pivot index.
@@ -76,7 +77,7 @@ int partition(int v[], int low, int high, int *lp, Data * cmp)
      * @var int p é o pivo da esquerda.
      * @var int q é o pivô da direita.
      */ 
-    int g = high - 1, k = low + 1, p = v[low], q = v[high];
+    int g = right - 1, k = left + 1, p = v[left], q = v[right];
 
     /**
      * Continua até que os pivôs da esquerda e direita se encontrem
@@ -84,20 +85,17 @@ int partition(int v[], int low, int high, int *lp, Data * cmp)
     while(k<=g){
 
         /**
-         * Checks if element in next pivot position is lower than the element before then swap them.
+         * Verifica se o elemento n v[k] é menor que o pivô da esquerda
          */
-        cmp->cmp++; 
         if (v[k] < p){
             swap(&v[k], &v[j], cmp);
             j++;
         }
 
         /**
-         * If the k element isn't lower than the first comparison, checks if it's greater than the right pivot then,
-         * locates right-to-left position to swap and g becomes the position before this new position.
+         * Se o elemento v[k] não for menor que o pivô da esquerda, checa se é maior que o pivô da direita.
          */ 
         else if(v[k] >= q){
-            cmp->cmp++;
             while(v[g] > q && k < g){
                 g--;
                 cmp->cmp++;
@@ -106,7 +104,7 @@ int partition(int v[], int low, int high, int *lp, Data * cmp)
             g--;
 
             /**
-             * Checks if the swapped v[k] element is lower than the current left pivot then swap them.
+             * Verifica se o elemento trocado v[k] é menor que o atual pivô e os troca.
              */ 
             if(v[k] < p){
                 swap(&v[k], &v[j], cmp);
@@ -114,21 +112,21 @@ int partition(int v[], int low, int high, int *lp, Data * cmp)
             }
             cmp->cmp++;
         }
-        cmp->cmp++;
+        cmp->cmp+=2;
         k++;
     }
     j--;
     g++;
 
-    swap(&v[low], &v[j], cmp);
-    swap(&v[high], &v[g], cmp);
+    swap(&v[left], &v[j], cmp);
+    swap(&v[right], &v[g], cmp);
     /**
-     * Indirectly returns the left global pivot position to lp by reference.
+     * Retorna a posição do pivô da esquerda por referência
      */ 
     *lp = j;
 
     /**
-     * This is the current left global pivot position. 
+     * Retorna a posição a posição do pivô da direita
      */
     return g;
 }
