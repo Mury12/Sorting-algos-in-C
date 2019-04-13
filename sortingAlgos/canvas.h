@@ -33,13 +33,4 @@ int sort(int choice, int *v, int size);
  */ 
 void navigation();
 
-/**
- * 
- */
-int profile();
-
-/**
- * 
- */ 
-void printProfilingData(char name[30], Data * cmp);
 #endif /* CANVAS_H */

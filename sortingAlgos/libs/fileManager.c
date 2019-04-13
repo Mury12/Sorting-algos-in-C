@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "utils.h"
 #include "fileManager.h"
 #define null NULL
 #define true 1
@@ -90,11 +91,43 @@ int read(int * v, char filename[40])
     return true;
 }
 
-int write(int *v, char filename[])
+int write(int *v, int size,  char filename[])
 {
-    
+    FILE *f;
+    int i;
+    f = fopen(filename, "w+");
+    if(!f) return false;
+
+    for(i=0; i<size; i++){
+        fprintf(f, "%d ", v[i]);
+    }
+    fprintf(f, "\n");
+
     return true;
 }
+
+void writeProfilingResults(Data *cmp, char filename[40])
+{
+    FILE *f;
+    int i;
+    f = fopen(filename, "w+");
+    if(!f) return;
+
+        fprintf(f, "\n\n------------------------------ %s ------------------------------\n\n", filename);
+    
+    for(i=0; i<5; i++){
+        
+        fprintf(f,"Tamanho do vetor: %d\n\tExecucoes: 30\n", cmp->size[i]);
+        fprintf(f,"\tComparacoes: %d\n", cmp->cmpt[i]);
+        fprintf(f,"\tTrocas: %d\n", cmp->tChanges[i]);
+        fprintf(f,"\tTempo medio: %.0lf ticks\n\n", cmp->diff[i]);
+
+    }
+
+    fprintf(f, "\n\n-------------------------------------------------------------------------\n\n");
+
+}
+
 
 int createRandomValuesFile(char filename[])
 {

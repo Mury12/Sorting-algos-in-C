@@ -27,3 +27,25 @@ void swap(int *a, int *b, Data * cmp)
 
     cmp->changes++;
 }
+
+double avg(double *v, int size)
+{
+    int i, c=0;
+
+    for(i=0; i<size; i++){
+        c+=v[i];
+    }
+
+    return (c/size);
+}
+
+void randomArray(int *v, int size)
+{
+    int i;
+    srand(clock());
+        for(i=0; i<size; i++){
+            int val;    
+            val = rand()%100;
+            v[i] = val;
+    }
+}

@@ -52,6 +52,7 @@ typedef struct Data Data;
  * @param size array size
  */
 void printv(int v[], int size);
+
 /**
  * Troca dois elementos de um vetor por referência
  * @param *a ponteiro para o primeiro valor
@@ -59,12 +60,17 @@ void printv(int v[], int size);
  * @param cmp é o ponteiro para a estrutura de armazenamento de métricas
  */ 
 void swap(int *a, int *b, Data * cmp);
+
 /**
- * 
+ * Cria um vetor aleatório com os parametros indicados.
  */
 void randomArray(int *v, int size);
+
 /**
- * 
+ * Tira a média de números em um vetor.
  */
 double avg(double *v, int size); 
+
+
+
 #endif /* UTILS_H */

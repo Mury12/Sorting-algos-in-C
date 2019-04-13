@@ -26,7 +26,7 @@ int read(int *v, char filename[]);
  * @param filename é o nome do arquivo que será criado
  * @returnstrue ou false
  */ 
-int write(int *v, char filename[]);
+int write(int *v, int size, char filename[]);
 
 /**
  * Cria um arquivo com o nome proposto com uma quantidade definida de números aleatórios, um por linha.
@@ -34,6 +34,8 @@ int write(int *v, char filename[]);
  * @returnstrue ou false
  */ 
 int createRandomValuesFile(char filename[]);
+
+void writeProfilingResults(Data *cmp, char name[40]);
 
 
 #endif /* FILEMANAGER_H */
