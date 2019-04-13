@@ -1,7 +1,7 @@
 # Execução
 ## Compilar
  - Na pasta do projeto:
-`gcc *.c **/*.c -o main`
+`gcc *.c **/*.c -o main -lm`
 
 ## Executar
  - Na pasta do projeto:

@@ -16,7 +16,6 @@
 #define null NULL
 #define true 1
 #define false 0
-#define _MAX_MULT_VALUE_ 3
 
 int start()
 {
@@ -31,7 +30,7 @@ int choseSorts()
     printf("\t_");
     scanf("%d", &choice);
 
-    return choice < 1 || choice > 8 ? false: choice;
+    return choice < 1 || choice > 9 ? false: choice;
 
 }
 
@@ -125,13 +124,16 @@ int sort(int choice, int * v, int size)
             case 8:
                 profile();
                 break;
+            case 9:
+                worstCaseProfile();
+                break;
         }
         
         cmp.end = clock();
         diff = (double)(cmp.end - cmp.start);
 
 
-    if(choice !=8){
+    if(choice < 8){
         printv(v, size);
 
         printf("Comparações: %lld\tTrocas: %lld\tTamanho do Vetor: %d\n", cmp.cmp, cmp.changes, size);

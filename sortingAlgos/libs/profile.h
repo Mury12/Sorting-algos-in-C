@@ -9,35 +9,43 @@
 int profile();
 
 /**
+ * Administra o profiling no pior caso do quick sort, sendo ordenado.
+ */ 
+int worstCaseProfile();
+
+/**
  * Realiza um teste com o Quick Sort de 2 pivos e guarda o resultado em um arquivo
  */ 
-void profileDualQuickSort();
+void profileDualQuickSort(int worstcase);
 
 /**
  * Realiza um teste com o Quick Sort e guarda o resultado em um arquivo
  */ 
-void profileQuickSort();
+void profileQuickSort(int worstcase);
 
 /**
  * Realiza um teste com o Merge Sort e armazena em um arquivo.
  */ 
-void profileMergeSort();
+void profileMergeSort(int worstcase);
 
 
 /**
  * Realiza um teste com o Insertion Sort e armazena em um arquivo.
  */ 
-void profileInsertionSort();
+void profileInsertionSort(int worstcase);
 
 
 /**
  * Realiza um teste com o Selection Sort e armazena em um arquivo.
  */ 
-void profileSelectionSort();
+void profileSelectionSort(int worstcase);
 
 
 /**
  * Escreve na tela os dados do teste.
  */ 
 void printProfilingData(char name[30], Data * cmp);
+
+void setProfilingBase();
+
 #endif /* PROFILE */
