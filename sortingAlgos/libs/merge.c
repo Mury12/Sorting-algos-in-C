@@ -25,7 +25,7 @@ void merge(int v[], int left, int mid, int right, Data * cmp)
     i = j = 0;
     k = left;
     
-    while(i < lsize && j < rsize-1){
+    while(i < lsize && j < rsize){
         if(l[i] <= r[j]){
             v[k] = l[i];
             cmp->changes++;
