@@ -30,7 +30,7 @@ void main()
     printTree(t, 1);
     printTree(t, 0);
 
-    pop(&t, 31);
+    pop(&t, 30);
     //printTree(t, 0);
     printTree(t, 1);
     printTree(t, 0);

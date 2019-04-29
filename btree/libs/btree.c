@@ -124,14 +124,12 @@ Tree * removeNode(Tree *t, Node *n)
             while(aux->right){
                 aux = aux->right;
             }
+        }else{
+            aux->parent->left = aux->right;
+            printf("\n nao tem esquerda em %d", aux->data);
         }
         swap(n, aux);
         
-        if(aux->parent->data > aux->data){
-            aux->parent->right = null;
-        }else{
-            aux->parent->left = null;
-        }
 
         printf("\n aux %d", aux->data);
 
@@ -261,6 +259,6 @@ Node * search(Tree *t, int data)
  */ 
 int leaf(Node *n)
 {
-    if(n->left && n->right) return 0;
+    if(n->left || n->right) return 0;
     return 1;
 }
