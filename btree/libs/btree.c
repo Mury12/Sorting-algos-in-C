@@ -129,11 +129,7 @@ Tree * removeNode(Tree *t, Node *n)
             printf("\n nao tem esquerda em %d", aux->data);
         }
         swap(n, aux);
-        
-
         printf("\n aux %d", aux->data);
-
-        
     }else{
         if(n->parent->data > n->data){
             aux->parent->left = aux->left ? aux->left : null;

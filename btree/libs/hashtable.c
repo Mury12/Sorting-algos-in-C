@@ -6,6 +6,9 @@
 
 #define null NULL
 
+/**
+ * Função de hash |7x| % HASHTABLE_SIZE
+ */  
 int hash(int data)
 {
     int hash;
@@ -14,6 +17,9 @@ int hash(int data)
     return hash;
 }
 
+/**
+ * Inicializa as listas da tabela
+ */ 
 void initTable(Hashtable * t)
 {
     int i;
@@ -25,6 +31,9 @@ void initTable(Hashtable * t)
     printf("\nHashtable initialized successfully.\n");
 }
 
+/**
+ * Insere um valor na tabela
+ */ 
 void pushHashtable(Hashtable * t, int v)
 {
     int idx = hash(v);
@@ -32,6 +41,10 @@ void pushHashtable(Hashtable * t, int v)
     pushList(&t->table[idx], v);
 
 }
+
+/**
+ * Remove um valor da tabela
+ */ 
 void removeValue(Hashtable *t, int v)
 {
     int idx = hash(v);
@@ -39,6 +52,10 @@ void removeValue(Hashtable *t, int v)
     removeList(&t->table[idx], v);
 
 }
+
+/**
+ * Imprime a tabela
+ */ 
 void printh(Hashtable t)
 {
     int i = 0;
