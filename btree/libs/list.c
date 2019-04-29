@@ -5,6 +5,9 @@
 
 #define null NULL
 
+/**
+ * Aloca um nó
+ */ 
 l_Node * nodeAlloc(int p)
 {
     l_Node *n;
@@ -18,11 +21,18 @@ l_Node * nodeAlloc(int p)
     return n;
 }
 
+
+/**
+ *  Inicia a lista
+ */ 
 void initl(List * l)
 {
     l->first = null;
 }
 
+/**
+ *  Insere um valor na lista
+ */ 
 void pushList(List * l, int p)
 {
     l_Node *aux, *prev, *n;
@@ -47,11 +57,22 @@ void pushList(List * l, int p)
     }
 }
 
+/**
+ * Remove um valor da lista
+ */ 
 void removeList(List * l, int p)
 {
     l_Node * aux, *prev, *n;
 
     aux = l->first;
+
+    if(aux->p == p){
+        l->first = aux->next;
+        aux = null;
+        free(aux);
+        printf("\n Removido node %d.\n", p);
+        return;
+    }
 
     while(aux && aux->p != p){
         prev = aux;
@@ -74,10 +95,12 @@ void removeList(List * l, int p)
             printf("\n Valor %d nao encontrado.\n", p);
         }
     }
-    
 
 }
 
+/**
+ *  Imprime a lista
+ */ 
 void printl(List l)
 {
     l_Node *prev, *n, *min;
