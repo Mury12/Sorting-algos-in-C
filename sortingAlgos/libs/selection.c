@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 #include "selection.h"
 #define null NULL
 #define true 1
@@ -9,7 +10,7 @@
  * @param v
  * @param size
  */
-void selectionSort(int v[], int size)
+void selectionSort(int v[], int size, Data * cmp)
 {
     int j=0, l, i=0, aux;
         
@@ -17,18 +18,13 @@ void selectionSort(int v[], int size)
         l = j;
         for(i=j+1; i<size; i++){
             
-            
             if(v[i] < v[l] && v[i] != v[l]){
                 l = i;
+                cmp->cmp++;
             }
             
         }
-        aux = v[l];
-        v[l] = v[j];
-        v[j] = aux;
-
-    }
-        printf("\n Ordered by selection Sort");
-
-    
+        if(l!=j) swap(&v[l], &v[j], cmp);
+        
+    }    
 }
