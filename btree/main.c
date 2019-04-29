@@ -7,18 +7,40 @@
 
 void main()
 {
-    Hashtable t;
+    Hashtable h;
+    Tree t;
 
-    initTable(&t);
+    //ARVORE
+    init(&t);
+
+    push(&t, 25);
+    push(&t, 23);
+    push(&t, 21);
+    push(&t, 22);
+    push(&t, 24);
+    push(&t, 27);
+    push(&t, 29);
+    push(&t, 31);
+    push(&t, 26);
+    push(&t, 28);
+    push(&t, 30);
+
+    printTree(t, 0);
+    pop(&t, 3);
+    //printTree(t, 0);
+    printTree(t, 0);
+
+    ///HASHTABLE
+   /* initTable(&h);
 
     int i;
 
     for(i = 0; i <= 50; i++){
-        pushHashtable(&t, i);
+        pushHashtable(&h, i);
     }
 
-    printh(t);
-    removeValue(&t, 47);
-    printh(t);
+    printh(h);
+    removeValue(&h, 0);
+    printh(h);*/
 
 }

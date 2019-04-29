@@ -53,6 +53,14 @@ void removeList(List * l, int p)
 
     aux = l->first;
 
+    if(aux->p == p){
+        l->first = aux->next;
+        aux = null;
+        free(aux);
+        printf("\n Removido node %d.\n", p);
+        return;
+    }
+
     while(aux && aux->p != p){
         prev = aux;
         aux = aux->next;
