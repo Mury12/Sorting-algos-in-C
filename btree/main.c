@@ -20,14 +20,19 @@ void main()
     push(&t, 24);
     push(&t, 27);
     push(&t, 29);
-    push(&t, 31);
+    push(&t, 33);
     push(&t, 26);
     push(&t, 28);
     push(&t, 30);
+    push(&t, 34);
+    push(&t, 31);
 
+    printTree(t, 1);
     printTree(t, 0);
-    pop(&t, 3);
+
+    pop(&t, 31);
     //printTree(t, 0);
+    printTree(t, 1);
     printTree(t, 0);
 
     ///HASHTABLE

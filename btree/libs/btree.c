@@ -119,18 +119,28 @@ Tree * removeNode(Tree *t, Node *n)
     
     if(!leaf(n)){
 
-        aux = aux->left;
-        while(aux->right){
-            aux = aux->right;
+        if(aux->left){
+            aux = aux->left;
+            while(aux->right){
+                aux = aux->right;
+            }
         }
         swap(n, aux);
-        aux->parent->right = aux->left ? aux->left : null;
+        
+        if(aux->parent->data > aux->data){
+            aux->parent->right = null;
+        }else{
+            aux->parent->left = null;
+        }
+
+        printf("\n aux %d", aux->data);
+
         
     }else{
         if(n->parent->data > n->data){
-        aux->parent->left = aux->right ? aux->right : null;
+            aux->parent->left = aux->left ? aux->left : null;
         }else{
-        aux->parent->right = aux->left ? aux->left : null;
+            aux->parent->right = aux->left ? aux->left : null;
         }
         free(n);
     }
@@ -151,8 +161,11 @@ Node * swap(Node * n, Node * t)
 
     aux = n->data;
 
+    printf("\n n %d t %d", n->data, t->data);
+
     n->data = t->data;
     t->data = aux;
+    printf("\n n %d t %d", n->data, t->data);
 
     return t;
 }
