@@ -13,24 +13,16 @@ void main()
     //ARVORE
     init(&t);
 
-    push(&t, 25);
-    push(&t, 23);
-    push(&t, 21);
-    push(&t, 22);
-    push(&t, 24);
-    push(&t, 27);
-    push(&t, 29);
-    push(&t, 33);
-    push(&t, 26);
-    push(&t, 28);
-    push(&t, 30);
-    push(&t, 34);
-    push(&t, 31);
+    push(&t, 10);
+    push(&t, 20);
+    push(&t, 5);
+    push(&t, 7);
+    push(&t, 6);
+
 
     printTree(t, 1);
     printTree(t, 0);
 
-    pop(&t, 30);
     //printTree(t, 0);
     printTree(t, 1);
     printTree(t, 0);

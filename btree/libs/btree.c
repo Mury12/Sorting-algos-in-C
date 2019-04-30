@@ -25,7 +25,7 @@ Node * alloc(int i)
 
     if(n){
         n->data = i;
-        n->set = 1;
+        n->mod = 0;
         n->parent = null;
         n->left = null;
         n->right = null;
@@ -75,7 +75,7 @@ void pushNode(Node * curr, Node *n)
         if(n->data > curr->data){
             if(!curr->right){
                 curr->right = n;
-                        n->parent = curr;   
+                n->parent = curr;   
 
             }else{
                 pushNode(curr->right, n);
@@ -83,13 +83,32 @@ void pushNode(Node * curr, Node *n)
         }else{
             if(!curr->left){
                 curr->left = n;
-                        n->parent = curr;   
-
+                n->parent = curr;   
             }else{
                 pushNode(curr->left, n);
             }
         }
     }
+    printf("\n datapath: ");
+    balance(n);
+}
+
+void balance(Node *n)
+{
+    if(!n){
+        printf("\n");
+        return;
+    }
+
+    n->mod += n->right ? 1 + n->right->mod : 0;
+    n->mod -= n->left  ? 1 + n->left->mod : 0;
+
+    if(n->mod > 1)  translate(n, 0);
+    else
+    if(n->mod < -1) translate(n, 1);
+    printf(" %02d ", n->data);
+    balance(n->parent);
+
 }
 
 /**
@@ -193,6 +212,13 @@ int greatest(Tree * t)
 }
 
 
+void translate(Node * n, int mode)
+{
+
+}
+
+
+
 /**
  * Imprime uma árvore em ordem crescente
  */ 
@@ -220,6 +246,7 @@ void printNode(Node * n, int format)
             else printf("--le");
             if(n->right) printf("->%02d", n->right->data);
             else printf("af--");
+            printf("\n---%02d--- \n", n->mod);
             printNode(n->right, format);
         }else{
             printNode(n->left, format);
