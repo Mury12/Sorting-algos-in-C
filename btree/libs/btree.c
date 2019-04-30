@@ -95,13 +95,17 @@ void pushNode(Node * curr, Node *n)
 
 void balance(Node *n)
 {
-    if(!n){
+    if(!n->parent){
         printf("\n");
         return;
     }
 
-    n->mod += n->right ? 1 + n->right->mod : 0;
-    n->mod -= n->left  ? 1 + n->left->mod : 0;
+   
+    if(n->parent->left == n)
+        n->parent->mod -=1;
+    else
+        n->parent->mod +=1;
+   
 
     if(n->mod > 1)  translate(n, 0);
     else
