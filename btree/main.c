@@ -9,23 +9,21 @@ void main()
 {
     Hashtable h;
     Tree t;
-
+    int c;
     //ARVORE
     init(&t);
 
-    push(&t, 10);
-    push(&t, 20);
-    push(&t, 5);
-    push(&t, 7);
-    push(&t, 6);
-
-
-    printTree(t, 1);
-    printTree(t, 0);
+    while(1){
+        scanf("%d", &c);
+        push(&t, c);
+        printTree(t, 1);
+    }
 
     //printTree(t, 0);
-    printTree(t, 1);
-    printTree(t, 0);
+
+    //printTree(t, 0);
+    //printTree(t, 1);
+    //printTree(t, 0);
 
     ///HASHTABLE
    /* initTable(&h);

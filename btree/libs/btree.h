@@ -2,7 +2,7 @@
 #define BTREE_H
 
 typedef struct Node{
-    int data, mod;
+    int data, bf;
     struct Node *right, *left, *parent;
 }Node;
 
@@ -19,6 +19,7 @@ Tree * pop(Tree * t, int data);
 Tree * removeNode(Tree *t, Node *n);
 void translate(Node * n, int mode);
 void balance(Node *n);
+void updateBalanceFactor(Node *n);
 
 
 int smallest(Tree * t);

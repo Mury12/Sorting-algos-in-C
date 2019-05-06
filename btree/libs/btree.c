@@ -25,7 +25,7 @@ Node * alloc(int i)
 
     if(n){
         n->data = i;
-        n->mod = 0;
+        n->bf = 0;
         n->parent = null;
         n->left = null;
         n->right = null;
@@ -76,7 +76,6 @@ void pushNode(Node * curr, Node *n)
             if(!curr->right){
                 curr->right = n;
                 n->parent = curr;   
-
             }else{
                 pushNode(curr->right, n);
             }
@@ -88,31 +87,35 @@ void pushNode(Node * curr, Node *n)
                 pushNode(curr->left, n);
             }
         }
+        
     }
     printf("\n datapath: ");
-    balance(n);
+    updateBalanceFactor(curr);
+
 }
 
 void balance(Node *n)
 {
-    if(!n->parent){
-        printf("\n");
-        return;
+    
+}
+
+void updateBalanceFactor(Node *n)
+{
+    if(!n->parent) return;
+
+    Node *aux = n;
+    Node *parent = n->parent;
+
+    
+    if(parent->right && parent->left){
+        parent->bf = parent->left->bf - parent->right->bf;
+    }else if(parent->left){
+        parent->bf--;
+    }else{
+        parent->bf++;
     }
-
-   
-    if(n->parent->left == n)
-        n->parent->mod -=1;
-    else
-        n->parent->mod +=1;
-   
-
-    if(n->mod > 1)  translate(n, 0);
-    else
-    if(n->mod < -1) translate(n, 1);
-    printf(" %02d ", n->data);
-    balance(n->parent);
-
+    printf("veio");
+    updateBalanceFactor(parent);
 }
 
 /**
@@ -250,7 +253,7 @@ void printNode(Node * n, int format)
             else printf("--le");
             if(n->right) printf("->%02d", n->right->data);
             else printf("af--");
-            printf("\n---%02d--- \n", n->mod);
+            printf("\n---%02d--- \n", n->bf);
             printNode(n->right, format);
         }else{
             printNode(n->left, format);
