@@ -194,7 +194,12 @@ int greatest(Tree * t)
 
 
 /**
- * Imprime uma árvore em ordem crescente
+ * Imprime uma árvore em ordem crescente.
+ * @format 0 imprime uma lista 1, 2, 3, 4..
+ * @format 1 imprime com os filhos 
+ * ---10---
+ * 09<-->11
+ * --------
  */ 
 void printTree(Tree t, int format)
 {

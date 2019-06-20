@@ -27,12 +27,12 @@ void main()
     push(&t, 34);
     push(&t, 31);
 
-    printTree(t, 1);
+    // printTree(t, 1);
     printTree(t, 0);
 
     pop(&t, 30);
     //printTree(t, 0);
-    printTree(t, 1);
+    //printTree(t, 1);
     printTree(t, 0);
 
     ///HASHTABLE
