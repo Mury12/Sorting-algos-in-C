@@ -16,6 +16,7 @@ struct node{
 struct tree{
     struct node * root;
     int count;
+    int height;
     int tree;
 };
 
@@ -78,7 +79,7 @@ Node * find_previous(Node * n);
 Node * promoteChild(Node * n);
 
 Node * split_node(Node * aux);
-Node * search_insert(Node *n, int data);
+Node * search_insert(Tree * t, Node *n, int data);
 
 char * tree_type(Tree *t);
 int get_num_childs(Node *n);

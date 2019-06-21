@@ -14,6 +14,7 @@ void init(Tree * t)
 {
     t->root = null;
     t->count = 0;
+    t->height = 0;
     t->tree = BTREE;
 }
 //Inserts a node
@@ -37,47 +38,23 @@ void insert(Tree * t, int data)
                     //split
                     n = split_node(aux);
                     t->root = n;
+                    t->height++;
                 }
-                int n_childs = get_num_childs(n);
-                while(n_childs>1){
-                    printf("\t");
-                    n_childs--;
-                }
-                printf("|%02d|%02d|%02d| \n", n->data[0], n->data[1], n->data[2]);
-                printf("|%02d|%02d|%02d|-", n->childs[0]->data[0], n->childs[0]->data[1], n->childs[0]->data[2]);
-                printf("|%02d|%02d|%02d| \n", n->childs[1]->data[0], n->childs[1]->data[1], n->childs[1]->data[2]);
-
-                Node *m = search_insert(n, data);
+                Node *m = search_insert(t, n, data);
                 insert_elem(m, data);
-
             }else{
                 insert_elem(aux, data);
             }
         }else{
             Node *m;
-            m = search_insert(t->root, data);
+            m = search_insert(t, t->root, data);
             printf("No para insercao:\n\t|%02d|%02d|%02d| \n", m->data[0], m->data[1], m->data[2]);
 
             if(m->fill == CAP){
                 split_node(m);
-                m = search_insert(t->root, data);
+                m = search_insert(t, t->root, data);
             }
             insert_elem(m, data);
-                int n_childs = get_num_childs(t->root);
-                while(n_childs>1){
-                    printf("\t");
-                    n_childs--;
-                }
-            printf("|%02d|%02d|%02d| \n", t->root->data[0], t->root->data[1], t->root->data[2]);
-            printf("|%02d|%02d|%02d|", t->root->childs[0]->data[0], t->root->childs[0]->data[1], t->root->childs[0]->data[2]);
-            printf("\t|%02d|%02d|%02d|", t->root->childs[1]->data[0], t->root->childs[1]->data[1], t->root->childs[1]->data[2]);
-            if(t->root->childs[2]){
-                printf("\t|%02d|%02d|%02d|", t->root->childs[2]->data[0], t->root->childs[2]->data[1], t->root->childs[2]->data[2]);
-            }
-            if(t->root->childs[3]){
-                printf("\t|%02d|%02d|%02d|", t->root->childs[3]->data[0], t->root->childs[3]->data[1], t->root->childs[3]->data[2]);
-            }
-
             return;
         }
     }
@@ -87,18 +64,18 @@ int insert_elem(Node * n, int data)
 {
     Node * aux;
     aux = n;
-
+    int r;
     if(aux->fill < CAP){
         int i=0;
         while(aux->data[i] != -1 && i < CAP){
             i++;
         }
-
+        r=i;
         while(data < aux->data[i-1] && i > 0){
             int a;
             Node * b;
-            //ainda precisa trocar a ordem do vetor de childs
 
+            //ordena a inserção
             a = aux->data[i-1];
             aux->data[i-1] = data;
             aux->data[i] = a;
@@ -107,38 +84,65 @@ int insert_elem(Node * n, int data)
         aux->data[i] = data;
         aux->fill++;
         printf("Adicionando elemento %d: |%02d|%02d|%02d| \n", data, n->data[0], n->data[1], n->data[2]);
-        return i;
     }
+    return r;
 }
 
-Node * search_insert(Node *n, int data)
+Node * search_insert(Tree * t, Node *n, int data)
 {
     Node *aux;
     int i=0;
     aux = n;
 
+    //preemptive split
+    if(aux->fill == CAP){
+        //preemptive split
+        if(!aux->parent){//raíz
+            //split
+            n = split_node(aux);
+            t->root = n;
+        }else{
+            //precisa acertar as referencias
+            n = split_node(aux);
+        }
+        t->height++;
+        aux = n;
+    }
 
     if(!aux->childs[0]) return aux;
-    while((data > aux->data[i] && aux->data[i] == -1) && i < CAP){
-        i++;
+
+    for(i=0; i<CAP; i++){
+        if(aux->data[i] == -1 || data <= aux->data[i]){
+            break;
+        }
+    }
+    if(data > aux->data[i] && aux->childs[i+1]){
+        return search_insert(t, aux->childs[i+1], data);
+    }else{
+        return search_insert(t, aux->childs[i], data);
     }
 
-    if(data > aux->data[i]){
-        if(data > aux->data[i+1]){
-            printf("\n\n-----%d\n", aux->data[i+2]);
-            if(data > aux->data[i+2]){
-                return search_insert(aux->childs[i+3], data);
-            }else{
-                return search_insert(aux->childs[i+2], data);
-            }
-        }else{
-            printf("\n\n-----%d\n", aux->data[i+1]);
-            return search_insert(aux->childs[i+1], data);
-        }
-    }else{
-        printf("\n\n-----%d\n", aux->data[i]);
-        return search_insert(aux->childs[i], data);
-    }
+
+    // while((data > aux->data[i] && aux->data[i] == -1) && i < CAP){
+    //     i++;
+    // }
+
+    // if(data > aux->data[i]){
+    //     if(data > aux->data[i+1] && aux->childs[i+2]){
+    //         printf("\n\n-----%d\n", aux->data[i+2]);
+    //         if(data > aux->data[i+2] && aux->childs[i+3]){
+    //             return search_insert(t, aux->childs[i+3], data);
+    //         }else{
+    //             return search_insert(t, aux->childs[i+2], data);
+    //         }
+    //     }else{
+    //         printf("\n\n-----%d\n", aux->data[i+1]);
+    //         return search_insert(t, aux->childs[i+1], data);
+    //     }
+    // }else{
+    //     printf("\n\n-----%d\n", aux->data[i]);
+    //     return search_insert(t, aux->childs[i], data);
+    // }
 
 
 }
@@ -161,9 +165,30 @@ void rotateLeft(Node * n);
 void rotateRight(Node * n);
 
 //Prints a tree
-void print_t(Tree t, int order);
+void print_t(Tree t, int order)
+{
+    print_n(t.root, 0);
+}
 //Prints the tree nodes
-void print_n(Node * n, int order);
+void print_n(Node * n, int order)
+{
+    int i=0, nc = get_num_childs(n);
+    if(!n || nc == 0 ) return;
+
+    printf("|%02d|%02d|%02d| -> ", n->data[0], n->data[1], n->data[2]);
+    while(i < nc && n->childs[i]){
+        printf("- |%02d|%02d|%02d| ", n->childs[i]->data[0], n->childs[i]->data[1], n->childs[i]->data[2]);
+        i++;
+    }
+    printf("\n");
+    i=0;
+    while(i < nc && n->childs[i]){
+        print_n(n->childs[i],0);
+        i++;
+    }
+
+
+}
 //Gets the tree height
 void getHeight(Tree * t);
 
@@ -206,20 +231,24 @@ Node * promoteChild(Node * n);
 Node * split_node(Node * aux)
 {
     printf("\nNo cheio, split\n");
+    //n é o nó que será pai, m o nó da direita
+    //aux vira filho 0
     Node *n, *m;
     aux->fill = 1;
+    Node * p = aux->parent;
 
 
     if(aux->parent){
-        Node * p = aux->parent;
 
         int i=0, idx, n_childs=0;
         if(p->fill < CAP){
+
             idx = insert_elem(aux->parent, aux->data[1]);
-            printf("\n No cheio, promovendo %d\n", aux->data[1]);
-            printf("Posicionado em %d\n", i);
+            printf("\n No cheio, promovido %d\n", aux->data[1]);
+            printf("Posicionado em %d\n", idx);
 
             n_childs = get_num_childs(p);
+            //valor da direita
             n = allocate(aux->data[2]);
 
             i=n_childs-1;
@@ -232,13 +261,27 @@ Node * split_node(Node * aux)
             p->childs[idx+1] = n;
             n->parent = p;
 
-        }else{
-            split_node(aux->parent);
         }
+            //Se o pai está cheio, ele tem 4 filhos
+            //ajustar referencias antes do split
+
 
     }else{
         n = allocate(aux->data[1]);
         m = allocate(aux->data[2]);
+
+        printf("\n---filhos %d", get_num_childs(aux));
+        if(get_num_childs(aux) == 4){
+            m->childs[0] = aux->childs[2];
+            m->childs[1] = aux->childs[3];
+
+            m->childs[0]->parent = m;
+            m->childs[1]->parent = m;
+
+            n->childs[2] = n->childs[3] = null;
+            aux->childs[2] = aux->childs[3] = null;
+
+        }
         n->childs[0] = aux;
         n->childs[1] = m;
         aux->parent = m->parent = n;

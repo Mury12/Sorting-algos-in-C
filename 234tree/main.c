@@ -9,11 +9,21 @@ void main()
     int d;
 
     printf("\n  Tipo: %s - %d elementos \n", tree_type(&t), t.count);
+    insert(&t, 1);
+    insert(&t, 2);
+    insert(&t, 3);
+    insert(&t, 4);
+    insert(&t, 5);
 
     while(1){
-        scanf("%d", &d);
+        scanf(" %d", &d);
         insert(&t, d);
+        printf("\n------\n");
+        print_t(t, 0);
     }
+
+    printf("\n\n\n");
+    print_t(t, 0);
 
     // insert(&t, 11);
     // insert(&t, 8);
