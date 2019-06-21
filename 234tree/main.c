@@ -7,15 +7,15 @@ int main(int argc, char ** argv[])
     Tree t;
     init(&t);
     int di=0, d;
-    int da[16] = {10,22,13,41,15,0,2,9,52,14,24,32,80,7,4,27};
+    int da[16] = {14, 57, 29, 85, 6, 3, 89, 55, 22, 70, 62, 20, 5, 77, 39, 83};
     printf("\n  Tipo: %s - %d elementos \n", tree_type(&t), t.count);
-    while(di<16){
-        printf("\n\n--Próximo: %d", da[di]);
-        getchar();
-        insert(&t, da[di]);
-        print_t(t, 0);
-        di++;
-    }
+    // while(di<16){
+    //     printf("\n\n--Próximo: %d", da[di]);
+    //     getchar();
+    //     insert(&t, da[di]);
+    //     print_t(t, 0);
+    //     di++;
+    // }
 
     while(1){
         scanf(" %d", &d);

@@ -70,7 +70,6 @@ int insert_elem(Node * n, int data)
         while(aux->data[i] != -1 && i < CAP){
             i++;
         }
-        r=i;
         while(data < aux->data[i-1] && i > 0){
             int a;
             Node * b;
@@ -84,6 +83,11 @@ int insert_elem(Node * n, int data)
         aux->data[i] = data;
         aux->fill++;
         printf("Adicionando elemento %d: |%02d|%02d|%02d| \n", data, n->data[0], n->data[1], n->data[2]);
+    }
+    r=0;
+    while(r<CAP){
+        if(aux->data[r] == data) break;
+        r++;
     }
     return r;
 }
@@ -107,11 +111,13 @@ Node * search_insert(Tree * t, Node *n, int data)
             // int dbg;
             // scanf("%d", &dbg);
             n = split_node(aux);
-            printf("\n  Node: |%02d|%02d|%02d|\n", n->data[0], n->data[1], n->data[2]);
 
         }
         t->height++;
-        aux = t->root;
+        if(n->parent)
+            aux = n->parent;
+        else
+            aux = t->root;
     }
 
     if(!aux->childs[0]) return aux;
@@ -265,18 +271,15 @@ Node * split_node(Node * aux)
             Node * z = p->childs[idx];
             if(n->data[0] > p->data[idx]){
                 p->childs[idx+1] = n;
-            }else{
+            }else
+            if(z->data[0] > p->data[idx]){
                 p->childs[idx] = n;
                 p->childs[idx+1] = z;
             }
-            // if(idx >= 2){
-            //     p->childs[idx] = z;
-            //     p->childs[idx+1] = n;
-            // }else{
-            //     p->childs[idx] = n;
-            //     p->childs[idx+1] = z;
-            // }
             n->parent = p;
+            printf("\n  Node: |%02d|%02d|%02d|\n", n->data[0], n->data[1], n->data[2]);
+            if(n->parent)
+            printf("\n  Parent: |%02d|%02d|%02d|\n", n->parent->data[0], n->parent->data[1], n->parent->data[2]);
 
             if(aux->childs[0]){
                 n->childs[0] = aux->childs[2];
