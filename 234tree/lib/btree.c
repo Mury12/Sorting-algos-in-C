@@ -64,7 +64,7 @@ int insert_elem(Node * n, int data)
 {
     Node * aux;
     aux = n;
-    int r;
+    int r=0;
     if(aux->fill < CAP){
         int i=0;
         while(aux->data[i] != -1 && i < CAP){
@@ -103,10 +103,15 @@ Node * search_insert(Tree * t, Node *n, int data)
             t->root = n;
         }else{
             //precisa acertar as referencias
+            // printf("\n--entrou aqui: ");
+            // int dbg;
+            // scanf("%d", &dbg);
             n = split_node(aux);
+            printf("\n  Node: |%02d|%02d|%02d|\n", n->data[0], n->data[1], n->data[2]);
+
         }
         t->height++;
-        aux = n;
+        aux = t->root;
     }
 
     if(!aux->childs[0]) return aux;
@@ -239,7 +244,6 @@ Node * split_node(Node * aux)
 
 
     if(aux->parent){
-
         int i=0, idx, n_childs=0;
         if(p->fill < CAP){
 
@@ -258,8 +262,28 @@ Node * split_node(Node * aux)
                 p->childs[i+1] = p->childs[i];
                 i--;
             }
-            p->childs[idx+1] = n;
+            Node * z = p->childs[idx];
+            if(n->data[0] > p->data[idx]){
+                p->childs[idx+1] = n;
+            }else{
+                p->childs[idx] = n;
+                p->childs[idx+1] = z;
+            }
+            // if(idx >= 2){
+            //     p->childs[idx] = z;
+            //     p->childs[idx+1] = n;
+            // }else{
+            //     p->childs[idx] = n;
+            //     p->childs[idx+1] = z;
+            // }
             n->parent = p;
+
+            if(aux->childs[0]){
+                n->childs[0] = aux->childs[2];
+                n->childs[1] = aux->childs[3];
+                n->childs[0]->parent = n->childs[1]->parent = n;
+                aux->childs[2] = aux->childs[3] = null;
+            }
 
         }
             //Se o pai está cheio, ele tem 4 filhos

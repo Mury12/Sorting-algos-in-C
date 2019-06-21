@@ -2,18 +2,20 @@
 #include <stdlib.h>
 #include "lib/btree.h"
 
-void main()
+int main(int argc, char ** argv[])
 {
     Tree t;
     init(&t);
-    int d;
-
+    int di=0, d;
+    int da[16] = {10,22,13,41,15,0,2,9,52,14,24,32,80,7,4,27};
     printf("\n  Tipo: %s - %d elementos \n", tree_type(&t), t.count);
-    insert(&t, 1);
-    insert(&t, 2);
-    insert(&t, 3);
-    insert(&t, 4);
-    insert(&t, 5);
+    while(di<16){
+        printf("\n\n--Próximo: %d", da[di]);
+        getchar();
+        insert(&t, da[di]);
+        print_t(t, 0);
+        di++;
+    }
 
     while(1){
         scanf(" %d", &d);
@@ -29,7 +31,7 @@ void main()
     // insert(&t, 8);
 
     // printf("\n  Raiz: |%02d|%02d|%02d|\n", t.root->data[0], t.root->data[1], t.root->data[2]);
-
+return 0;
 
 }
 
