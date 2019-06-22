@@ -20,7 +20,7 @@ typedef struct rb_tree RB_Tree;
 void init_rb(RB_Tree * t);
 //Inserts a node
 RB_Node * ord_insert(RB_Tree * t, int data);
-void insert_rb(RB_Tree * t, int data);
+void rb_fixup(RB_Tree * t, RB_Node * n);
 //Insere o nó e retorna o indice
 int insert_elem_rb(RB_Node * n, int data);
 //Removes a node
@@ -72,6 +72,13 @@ RB_Node * promoteChild_rb(RB_Node * n);
 RB_Node * split_node_rb(RB_Node * aux);
 RB_Node * search_insert_rb(RB_Tree * t, RB_Node *n, int data);
 
+//Retorna cor do nó em string
 char * get_node_color(RB_Node * n);
+//Retorna a cor do nó em BLK ou RED;
+int get_color_code(RB_Node * n);
+//Retorna o lado do nó
+int get_self_side(RB_Node * self);
+void invert_color(RB_Node * self);
+void change_color(RB_Node * n, int color);
 
 #endif

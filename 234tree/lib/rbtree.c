@@ -6,7 +6,8 @@
 #define RED 1
 #define BTREE 1
 #define RBLCK 2
-
+#define LEFT 1
+#define RIGHT 2
 
 
 void init_rb(RB_Tree * t)
@@ -16,8 +17,7 @@ void init_rb(RB_Tree * t)
     t->height = 0;
     t->tree = RBLCK;
 }
-//Inserts a node
-
+//Inserção binária simples
 RB_Node * ord_insert(RB_Tree * t, int data)
 {
     RB_Node * aux, * n;
@@ -26,6 +26,7 @@ RB_Node * ord_insert(RB_Tree * t, int data)
     printf("\n %s \n", get_node_color(n));
     if(t->root == null){
         printf(" Raiz nula iniciada \n");
+        change_color(n, BLK);
         t->root = n;
         return n;
     }
@@ -51,64 +52,62 @@ RB_Node * ord_insert(RB_Tree * t, int data)
 
     n->parent = aux;
     t->count++;
-
+    rb_fixup(t, n);
     return n;
 }
 
-void insert_rb(RB_Tree * t, int data)
+void rb_fixup(RB_Tree * t, RB_Node * n)
 {
-    RB_Node * x = ord_insert(t, data), *y;
+    //x = nó resultado da inserção normal
+    RB_Node *y, *uncle;
 
-    if(x == t->root) return;
+    if(n == t->root || !n || n->parent == t->root) return;
 
-    x->color = RED;
+    if(n->parent->parent){
+        uncle = get_self_side(n->parent) == RIGHT
+                ? n->parent->parent->left
+                : n->parent->parent->right;
+    }else uncle = null;
+//Caso 1 L
 
-        while(x != t->root){
-            if(x->parent->parent){
-                if(x->parent->parent->left && x->parent == x->parent->parent->left){
-                    if(x->parent->parent->right){
-                        y = x->parent->parent->right;
-                        if(y->color == RED){
-                            x->parent->parent->color = RED;
-                            x->parent->color = BLK;
-                            y->color = BLK;
-                            x = x->parent->parent;
-                        }else{
-                            if(x == x->parent->right){
-                                x = x->parent;
-                                rotateLeft_rb(t, x);
-                            }
-                            x->parent->color = BLK;
-                            x->parent->parent->color = RED;
-                            rotateRight_rb(t, x);
-                        }
-                    }
-                }else{
-                    if(x->parent->parent->left){
-                        y = x->parent->parent->left;
-                        if(y->color == RED){
-                            x->parent->parent->color = RED;
-                            x->parent->color = BLK;
-                            y->color = BLK;
-                            x = x->parent->parent;
-                        }else{
-                            if(x == x->parent->left){
-                                x = x->parent;
-                                rotateRight_rb(t, x);
-                            }
-                            x->parent->color = BLK;
-                            x->parent->parent->color = RED;
-                            rotateLeft_rb(t, x);
-                        }
-                    }
-                }
-                x = x->parent;
-            }else{
-                x->color = RED;
-            }
+    if(n->parent && get_color_code(uncle) == RED && n->parent->color == RED){
+
+        change_color(n->parent, BLK);
+        change_color(uncle,  BLK);
+        change_color(uncle->parent,  RED);
+        change_color(t->root, BLK);
+        return rb_fixup(t, n->parent->parent);
+    }
+
+//Caso 2 L
+    if(n->parent && get_color_code(uncle) == BLK){
+        if(get_self_side(n) == LEFT && get_self_side(n->parent) == LEFT){
+            rotateRight_rb(t, n->parent);
+            change_color(t->root, BLK);
+            return rb_fixup(t, n->right);
+        }
+        if(get_self_side(n) == RIGHT && get_self_side(n->parent) == RIGHT){
+            rotateLeft_rb(t, n->parent);
+            change_color(t->root, BLK);
+            return rb_fixup(t, n->left);
         }
 
-    t->root->color = BLK;
+//Caso 3 L
+        if(get_self_side(n) == LEFT && get_self_side(n->parent) == RIGHT){
+            change_color(n->parent,BLK);
+            rotateRight_rb(t, n);
+            change_color(t->root, BLK);
+            return rb_fixup(t, n->right);
+        }
+        if(get_self_side(n) == RIGHT && get_self_side(n->parent) == LEFT){
+            change_color(n->parent,BLK);
+            rotateLeft_rb(t, n);
+            change_color(t->root, BLK);
+            return rb_fixup(t, n->left);
+        }
+    }
+
+    return;
 }
 //Insere o nó e retorna o indice
 int insert_elem_rb(RB_Node * n, int data);
@@ -128,83 +127,112 @@ void copy_rb(RB_Node * a, RB_Node * b);
 //Rotates left
 void rotateLeft_rb(RB_Tree * t, RB_Node * n)
 {
-    printf("\n--Nó %d desbalanceado, rotacao esquerda.\n", n->data);
-    RB_Node * aux;
-    //aux recebe filho direito de n
-    aux = n->right;
+    printf("\n--Nó %d desbalanceado, rotacao a esquerda.\n", n->data);
+    RB_Node *aux;
+    if(n == t->root) return;
+    //Se o pai de N for raíz, n se tornará raíz
+    if(n->parent == t->root) t->root = n;
 
-    n->right = aux->left;
+    aux = n->parent;
 
-    if(aux->left){
-        aux->left->parent = n;
+    int color;
+    color = n->color;
+    change_color(n, get_color_code(n->parent));
+    n->parent ? change_color(n->parent, color) : 0;
+    //Pai recebe o filho a direita do nó que sobe
+    n->parent->right = n->left;
+    n->left = n->parent;
+
+    //Atualiza o avô
+     if(n->parent->parent){
+        if(get_self_side(n->parent) == RIGHT){
+            n->parent->parent->right = n;
+        }else{
+            n->parent->parent->left = n;
+        }
     }
-    aux->parent = n->parent;
+    n->parent = aux->parent;
+    aux->parent = n;
 
-    if(!n->parent){
-        t->root = aux;
-    }else
-    if(n = n->parent->left){
-        n->parent->left = aux;
-    }else{
-        n->parent->right = aux;
-    }
-
-    aux->left = n;
-    n->parent = aux;
+    if(n == t->root) n->parent = null;
 }
 //Rotates right
 void rotateRight_rb(RB_Tree * t, RB_Node * n)
 {
-    printf("\n--Nó %d desbalanceado, rotacao esquerda.\n", n->data);
-    RB_Node * aux;
-    //aux recebe filho direito de n
-    aux = n->left;
+    printf("\n--Nó %d desbalanceado, rotacao a direita.\n", n->data);
+    RB_Node *aux;
+    if(n == t->root) return;
+    //Se o pai de N for raíz, n se tornará raíz
+    if(n->parent == t->root) t->root = n;
+    aux = n->parent;
 
-    n->left = aux->right;
+    int color;
+    color = n->color;
+    change_color(n, get_color_code(n->parent));
+    n->parent ? change_color(n->parent,color) : 0;
+    //Pai recebe o filho a direita do nó que sobe
+    n->parent->left = n->right;
+    n->right = n->parent;
 
-    if(aux->right){
-        aux->right->parent = n;
+    if(n->parent->parent){
+        if(get_self_side(n->parent) == RIGHT){
+            n->parent->parent->right = n;
+        }else{
+            n->parent->parent->left = n;
+        }
     }
-    aux->parent = n->parent;
+    n->parent = aux->parent;
+    aux->parent = n;
 
-    if(!n->parent){
-        t->root = aux;
-    }else
-    if(n = n->parent->right){
-        n->parent->right = aux;
-    }else{
-        n->parent->left = aux;
-    }
+    if(n == t->root) n->parent = null;
 
-    aux->right = n;
-    n->parent = aux;
 }
 
 void print_rb(RB_Tree t, int order)
 {
+    printf("\nRaiz: %d %s", t.root->data, get_node_color(t.root));
     print_n_rb(t.root, order);
     printf("\n");
 }
 //Recursively prints the nodes
 void print_n_rb(RB_Node * n, int order)
 {
-    if(n == null) return;
+    if(!n) return;
 
     switch(order){
         case 1:
             print_n_rb(n->left, order);
-            printf(" \n %d - %s", n->data, get_node_color(n));
+            // printf(" \n %d - %s", n->data, get_node_color(n));
+            printf("\n---------- \n");
+            if( get_color_code(n) == BLK)
+            printf("\n---[%02d]--- \n", n->data);
+            else
+            printf("\n---(%02d)--- \n", n->data);
+
+            if(n->left){
+                if( get_color_code(n->left) == BLK)
+                    printf("[%02d]<", n->left->data);
+                else
+                    printf("(%02d)<", n->left->data);
+            }else printf("---le");
+            if(n->right){
+                if( get_color_code(n->right) == BLK)
+                    printf(">[%02d]", n->right->data);
+                else
+                    printf(">(%02d)", n->right->data);
+            }else printf("af---");
+
             print_n_rb(n->right, order);
             break;
         case 2:
-            printf(" %d ", n->data);
+            printf(" \n %d - %s", n->data, get_node_color(n));
             print_n_rb(n->left, order);
             print_n_rb(n->right, order);
             break;
         case 3:
             print_n_rb(n->left, order);
             print_n_rb(n->right, order);
-            printf(" %d ", n->data);
+            printf(" \n %d - %s", n->data, get_node_color(n));
             break;
     }
 }
@@ -216,7 +244,7 @@ RB_Node * allocate_rb(int data)
 {
     RB_Node * n = malloc(sizeof(RB_Node));
     n->data   = data;
-    n->color  = BLK;
+    n->color  = RED;
     n->left   = null;
     n->right  = null;
     n->parent = null;
@@ -247,6 +275,36 @@ RB_Node * search_insert_rb(RB_Tree * t, RB_Node *n, int data);
 
 char * get_node_color(RB_Node * n)
 {
-    if(n->color == BLK) return "BLK";
+    if(n->color == BLK || !n) return "BLK";
     else return "RED";
+}
+
+int get_color_code(RB_Node * n)
+{
+    return !n ? BLK : n->color;
+}
+
+int get_self_side(RB_Node * self)
+{
+    if(self->parent){
+        return self == self->parent->right ? RIGHT : LEFT;
+    }
+    return 0;
+}
+
+void invert_color(RB_Node * self)
+{
+    if(self){
+        if(self->parent){
+            self->color = get_color_code(self) == RED
+                        ? BLK
+                        : RED;
+        }
+    }
+}
+
+void change_color(RB_Node * n, int color)
+{
+    n ? n->color = color : 0;
+    printf("\n\t\t %d color changed to %s\n", n->data, get_node_color(n));
 }
