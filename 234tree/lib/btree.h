@@ -1,87 +1,77 @@
 #ifndef BTREE_H
 #define BTREE_H
 
-
-struct rb_node{
-    struct node * left, * right;
-    int color;
-};
-struct node{
+struct node_234{
     int data[3];
     int fill;
-    struct node * childs[4];
-    struct node * parent;
-    struct rb_node * rb;
+    struct node_234 * childs[4];
+    struct node_234 * parent;
 };
-struct tree{
-    struct node * root;
+struct tree_234{
+    struct node_234 * root;
     int count;
     int height;
     int tree;
 };
 
-struct rb_node;
-struct node;
-struct tree;
-typedef struct node Node;
-typedef struct rb_node RB_Node;
-typedef struct tree Tree;
+typedef struct node_234 Node_234;
+typedef struct tree_234 Tree_234;
 
-void init(Tree * t);
+void init(Tree_234 * t);
 //Inserts a node
-void insert(Tree * t, int data);
+void insert(Tree_234 * t, int data);
 //Insere o nó e retorna o indice
-int insert_elem(Node * n, int data);
+int insert_elem(Node_234 * n, int data);
 //Removes a node
-void remove_n(Tree * t, int data);
-void remove_btree(Node * n);
-void remove_rb(Node * n);
+void remove_n(Tree_234 * t, int data);
+void remove_btree(Node_234 * n);
+void remove_rb(Node_234 * n);
 //Updates balance factor
-void updateBF(Node * n, Tree * t);
+void updateBF(Node_234 * n, Tree_234 * t);
 //Balances a subtree
-void balance(Node * n);
+void balance(Node_234 * n);
 //Swapp a with b
-void swap(Node * a, Node * b);
+void swap(Node_234 * a, Node_234 * b);
 //Copy a value to b;
-void copy(Node * a, Node * b);
+void copy(Node_234 * a, Node_234 * b);
 
 //Rotates left
-void rotateLeft(Node * n);
+void rotateLeft(Node_234 * n);
 //Rotates right
-void rotateRight(Node * n);
+void rotateRight(Node_234 * n);
 
 //Prints a tree
-void print_t(Tree t, int order);
+void print_t(Tree_234 t, int order);
 //Prints the tree nodes
-void print_n(Node * n, int order);
+void print_n(Node_234 * n, int order);
 //Gets the tree height
-void getHeight(Tree * t);
+void getHeight(Tree_234 * t);
 
 //Alocates a node
-Node * allocate(int data);
+Node_234 * allocate(int data);
 //Searches a value in the tree
-Node * search(Tree * t, int data);
+Node_234 * search(Tree_234 * t, int data);
 //Searches the node
-Node * search_n(Node * n, int data);
+Node_234 * search_n(Node_234 * n, int data);
 //Gets the bigger value
-Node * maxval(Tree * t);
+Node_234 * maxval(Tree_234 * t);
 //Gets the lwoest value
-Node * minval(Tree * t);
+Node_234 * minval(Tree_234 * t);
 //Next value
-Node * next(Node * n);
+Node_234 * next(Node_234 * n);
 //Tracks the next node value
-Node * find_next(Node * n);
+Node_234 * find_next(Node_234 * n);
 //Previous value
-Node * previous(Node * n);
+Node_234 * previous(Node_234 * n);
 //Tracks the previous node value
-Node * find_previous(Node * n);
+Node_234 * find_previous(Node_234 * n);
 //Promotes a child node one level above
-Node * promoteChild(Node * n);
+Node_234 * promoteChild(Node_234 * n);
 
-Node * split_node(Node * aux);
-Node * search_insert(Tree * t, Node *n, int data);
+Node_234 * split_node(Node_234 * aux);
+Node_234 * search_insert(Tree_234 * t, Node_234 *n, int data);
 
-char * tree_type(Tree *t);
-int get_num_childs(Node *n);
+char * tree_type(Tree_234 *t);
+int get_num_childs(Node_234 *n);
 
 #endif
