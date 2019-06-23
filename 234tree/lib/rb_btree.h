@@ -6,7 +6,7 @@
 
 void check_234_tree(Tree_234 *t);
 //manipula a conversão
-RB_Tree * convert_234_rb(Tree_234 *t);
+RB_Tree convert_234_rb(Tree_234 *t);
 //cria os nós e retorna o nó mais significante
 RB_Node * make_rb_node(Node_234 * n);
 Node_234 *  make_234_node(RB_Node * n);

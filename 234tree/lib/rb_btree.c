@@ -14,21 +14,24 @@
 
 
 void check_234_tree(Tree_234 *t){
-    printf("\n--------------------------------------");
-    printf("\n %s ALTURA: %d \t ELEMENTOS: %d",tree_type(t), t->height, t->count);
-    printf("\n--------------------------------------\n\n");
-    printf("\n--PRESSIONE [ENTER] PARA INICIAR\n");
-    getchar();
+    printf("\n\t--------------------------------------");
+    printf("\n\t%s ALTURA: %d \t ELEMENTOS: %d",tree_type(t), t->height, t->count);
+    printf("\n\t--------------------------------------\n\n");
+    printf("\n\t--PRESSIONE [ENTER] PARA INICIAR\n");
+
 }
 //manipula a conversão
-RB_Tree * convert_234_rb(Tree_234 *t)
+RB_Tree convert_234_rb(Tree_234 *t)
 {
-    RB_Tree * rb_t;
+    RB_Tree rb_t;
 
     check_234_tree(t);
-    printf("\n---INICIANDO CONVERSAO 234 -> RED BLACK\n");
+    getchar();
+    printf("\n---CONVERSAO 234 -> RED BLACK\n");
 
+    rb_t = walk_234_tree(t);
 
+    printf("\n---CONVERSAO 234 -> RED BLACK CONCLUIDA.\n");
     return rb_t;
 }
 //cria os nós e retorna o nó mais significante

@@ -147,7 +147,11 @@ void rotateRight(Node_234 * n);
 void print_t(Tree_234 t, int order)
 {
     printf("\n|---NO---| ->  |FILHO 01| - |FILHO 02| - |FILHO 03| - |FILHO 04| \n");
-    print_n(t.root, 0);
+    if(get_num_childs(t.root) == 0){
+        printf("|%02d|%02d|%02d| ", t.root->data[0], t.root->data[1], t.root->data[2]);
+    }else{
+        print_n(t.root, 0);
+    }
     printf("\nAltura: %d\tElementos: %d\tTipo: %s\n", t.height, t.count, tree_type(&t));
 }
 //Imprime um nó na tela
@@ -158,7 +162,8 @@ void print_t(Tree_234 t, int order)
 void print_n(Node_234 * n, int order)
 {
     int i=0, nc = get_num_childs(n);
-    if(!n || nc == 0 ) return;
+
+    if(!n || nc == 0) return;
 
     printf("|%02d|%02d|%02d| -> ", n->data[0], n->data[1], n->data[2]);
     while(i < nc && n->childs[i]){
