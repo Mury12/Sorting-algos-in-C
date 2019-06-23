@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "rbtree.h"
+
 #define null NULL
 #define BLK 0
 #define RED 1
@@ -306,5 +307,5 @@ void invert_color(RB_Node * self)
 void change_color(RB_Node * n, int color)
 {
     n ? n->color = color : 0;
-    printf("\n\t\t %d color changed to %s\n", n->data, get_node_color(n));
+    // printf("\n\t\t %d color changed to %s\n", n->data, get_node_color(n));
 }
