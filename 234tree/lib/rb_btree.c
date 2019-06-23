@@ -53,7 +53,11 @@ RB_Node * three_node(Node_234 * n)
 }
 RB_Node * four_node(Node_234 * n)
 {
-
+    RB_Node * rb_node;
+    rb_node = allocate_rb(n->data[1]);
+    rb_node->left = allocate_rb(n->data[0]);
+    rb_node->right = allocate_rb(n->data[2]);
+    return rb_node;
 }
 RB_Node * leaf_node(Node_234 * n)
 {
@@ -105,16 +109,22 @@ RB_Tree walk_234_tree(Tree_234 * t){
         i++;
     }
 
+    //Posiciona os nós nos lugares corretos
+    //de acordo com o numero de filhos do nó 234
     switch(get_num_childs(t->root)){
         case 2:
             root->left = a[0];
             root->right = a[1];
+            a[0]->parent = a[1]->parent = root;
         break;
 
         case 3:
             root->left->left = a[0];
             root->left->right = a[1];
             root->right = a[2];
+            root->left->parent = root->right->parent = root;
+            a[0]->parent = a[1]->parent = root->left;
+            a[2]->parent = root;
         break;
 
         case 4:
@@ -122,16 +132,20 @@ RB_Tree walk_234_tree(Tree_234 * t){
             root->left->right = a[1];
             root->right->left = a[2];
             root->right->right = a[3];
+            root->left->parent = root->right->parent = root;
+            a[0]->parent = a[1]->parent = root->left;
+            a[2]->parent = a[3]->parent = root->right;
         break;
     }
     // printf("\n------%d %s\n", root->right->data, get_node_color(root->right));
+    change_color(root, BLK);
     rb_t.root = root;
     return rb_t;
 }
 RB_Node * walk_234_nodes(Node_234 * n)
 {
 
-        printf("\n---current node |%02d|%02d|%02d|", n->data[0], n->data[1], n->data[2]);
+        printf("\n---CONVERTENDO NODE |%02d|%02d|%02d|", n->data[0], n->data[1], n->data[2]);
 
         RB_Tree t;
         RB_Node *a[4], *parent, *rb_node;
@@ -149,12 +163,16 @@ RB_Node * walk_234_nodes(Node_234 * n)
             case 2:
                 rb_node->left = a[0];
                 rb_node->right = a[1];
+                a[0]->parent = a[1]->parent = rb_node;
             break;
 
             case 3:
                 rb_node->left->left = a[0];
                 rb_node->left->right = a[1];
                 rb_node->right = a[2];
+                rb_node->left->parent = rb_node->right->parent = rb_node;
+                a[0]->parent = a[1]->parent = rb_node->left;
+                a[2]->parent = rb_node;
             break;
 
             case 4:
@@ -162,13 +180,11 @@ RB_Node * walk_234_nodes(Node_234 * n)
                 rb_node->left->right = a[1];
                 rb_node->right->left = a[2];
                 rb_node->right->right = a[3];
+                rb_node->left->parent = rb_node->right->parent = rb_node;
+                a[0]->parent = a[1]->parent = rb_node->left;
+                a[2]->parent = a[3]->parent = rb_node->right;
             break;
         }
-
-
-        // t.root = rb_node;
-        // print_rb(t, 1);
-
     return rb_node;
 }
 void walk_rb_nodes(RB_Tree * t);
