@@ -72,8 +72,8 @@ int body(int * v, int size)
     system("cls");
     system("clear");
 
-    find = search_234_rm(t_234.root, 204);
-    printf("\n\n\t |%d|%d|%d|\n", find->data[0],find->data[1],find->data[2]);
+    // find = search_234_rm(t_234.root, 204);
+    // printf("\n\n\t |%d|%d|%d|\n", find->data[0],find->data[1],find->data[2]);
 
     navigation(which);
 

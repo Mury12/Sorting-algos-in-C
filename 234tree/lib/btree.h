@@ -34,7 +34,7 @@ int insert_elem(Node_234 * n, int data);
  */
 void remove_234(Tree_234 * t, int data);
 int remove_234_node(Node_234 * n, int data);
-Node_234 * next_234(Node_234 * n);
+Node_234 * next_234(Node_234 * n, int data);
 /**
  * Realiza e trata a remoção do nó
  */
@@ -105,5 +105,4 @@ int get_num_childs(Node_234 *n);
 int get_self_pos(Node_234 *self, int data);
 int get_self_child_idx(Node_234 * self);
 int get_parent_idx(Node_234 * self, int idx);
-
 #endif

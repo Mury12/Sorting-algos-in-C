@@ -93,13 +93,22 @@ Node_234 * search_234_rm(Node_234 * root, int data)
     Node_234 * aux;
     aux = root;
     int i = 0;
+    int idx, self, p_idx;
+    idx = get_self_pos(aux, data);
 
-    if(!aux->childs[0]) return aux;
+    if(!aux->childs[0] || aux->data[idx] == data) return aux;
 
-    if(aux->childs && aux->fill == 1){
+    if(aux->parent && aux->childs && aux->fill == 1){
         if(aux->parent->fill > 1){
-
+            self = get_self_child_idx(aux);
+            if(aux->parent->childs[self+1] && aux->parent->childs[self+1]->fill == 1){
+               merge_nodes(aux, aux->parent->childs[self+1]);
+            }else
+            if(aux->parent->childs[self-1] && aux->parent->childs[self-1]->fill == 1){
+                merge_nodes(aux->parent->childs[self-1], aux);
+            }
         }
+        return search_234_rm(aux->parent, data);
     }
 
     for(i=0; i<CAP; i++){
@@ -107,10 +116,10 @@ Node_234 * search_234_rm(Node_234 * root, int data)
             break;
         }
     }
-    if(data > aux->data[i] && aux->childs[i+1]){
-        return search_234_rm(aux->childs[i+1], data);
-    }else{
+    if(data > aux->data[i-1] && aux->childs[i]){
         return search_234_rm(aux->childs[i], data);
+    }else{
+        return search_234_rm(aux->childs[i-1], data);
     }
 }
 
@@ -144,10 +153,10 @@ Node_234 * search_insert(Tree_234 * t, Node_234 *n, int data)
             break;
         }
     }
-    if(data > aux->data[i] && aux->childs[i+1]){
-        return search_insert(t, aux->childs[i+1], data);
-    }else{
+    if(data > aux->data[i-1] && aux->childs[i]){
         return search_insert(t, aux->childs[i], data);
+    }else{
+        return search_insert(t, aux->childs[i-1], data);
     }
 }
 //Removes a node
@@ -326,12 +335,7 @@ void remove_234(Tree_234 * t, int data)
 int remove_234_node(Node_234 * n, int data)
 {
     int i = 0, idx=0, p_idx=0;
-    // while(i<CAP){
-    //     //posição do elemento
-    //     if(n->data[i] == data) idx = i;
-    //     //posição do pai
-    //     i++;
-    // }
+
     idx = get_self_pos(n, data);
     p_idx = get_parent_idx(n, idx);
 
@@ -349,8 +353,8 @@ int remove_234_node(Node_234 * n, int data)
         if(n->parent && n->fill == 1){
             n->data[idx] = -1;
             //empresta rotaçao direita ou esquerda
-            if(data > n->parent->data[p_idx]){
-                int self = p_idx+1;
+            if(data >= n->parent->data[p_idx]){
+                int self = get_self_child_idx(n);
                 int lend, old, a, b;
                 Node_234 * left, *right;
                 left = n->parent->childs[self-1];
@@ -376,28 +380,34 @@ int remove_234_node(Node_234 * n, int data)
                         n->data[idx] = old;
 
                         //Se nenhum dos lados tem espaço, faz-se o merge dos nodes
-                    }else{
-                        if(n->parent->fill>1){
-                            left = n->parent->childs[self-1];
-                            lend = n->parent->data[p_idx];
-                            insert_elem(left, lend);
-                            i=p_idx;
-                            while(i < n->parent->fill - 1){
-                                n->parent->data[i] = n->parent->data[i+1];
-                            }
-
-                        }else{
-
-                        }
+                    }
                         n->parent->data[n->parent->fill] = -1;
                         n->parent->fill--;
                         n->parent->childs[self] = null;
                     }
                 }
             }else{
-
+                Node_234 * next = next_234(n, data);
+                int c = next->data[0];
+                i=0;
+                if(next->fill>1){
+                    while(i<CAP){
+                        next->data[i] = next->data[i+1];
+                    }
+                    n->data[idx] = c;
+                }else{
+                    int next_in_child = get_self_child_idx(next);
+                    if(next->parent->childs[next_in_child+1]){
+                        merge_nodes(next, next->parent->childs[next_in_child+1]);
+                    }else{
+                        if(next->parent->childs[next_in_child+1]){
+                        merge_nodes(next, next->parent->childs[next_in_child-1]);
+                    }
+                }
             }
         }
+    }else{
+
     }
                 printf("\n\t---removeu %d\n", data);
 
@@ -405,21 +415,42 @@ int remove_234_node(Node_234 * n, int data)
 Node_234 * merge_nodes(Node_234 *a, Node_234* b)
 {
     Node_234 * aux;
-    int c, d, e;
+    int self_a, self_b, idx, p_idx, c, d, i=0;
+    self_a = get_self_child_idx(a);
+    self_b = get_self_child_idx(b);
     aux = a;
+    p_idx = get_parent_idx(a, 0)+1;
 
-
-
-
+    //a e b tem um dado apenas
+    c = a->parent->data[p_idx];
+    d = b->data[0];
+    i=p_idx;
+    while(i < a->parent->fill - 1){
+        a->parent->data[i] = a->parent->data[i+1];
+        i++;
+    }
+    a->parent->fill--;
+    a->parent->data[a->parent->fill] = -1;
+    insert_elem(a, c);
+    insert_elem(a, d);
+    a->childs[2] = b->childs[0];
+    a->childs[3] = b->childs[1];
+    a->childs[2]->parent = a->childs[3]->parent = a;
+    a->parent->childs[self_b] = null;
+    free(b);
+    print_n(a, 1);
+    return a;
 }
-Node_234 * next_234(Node_234 * n)
+Node_234 * next_234(Node_234 * n, int data)
 {
     Node_234 * aux;
-    aux = n->childs[1];
+    int idx = get_self_pos(n, data);
+    aux = n->childs[idx+1];
 
     while(aux->childs[0]){
         aux = aux->childs[0];
     }
+
 
     return aux;
 }
@@ -462,7 +493,7 @@ int get_self_pos(Node_234 * self, int data)
     }
 }
 
-int get_self_child_pos(Node_234 * self)
+int get_self_child_idx(Node_234 * self)
 {
     int i=0;
     while(i<=CAP){
