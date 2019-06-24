@@ -14,8 +14,28 @@
  */
 int start()
 {
-    navigation(234);
-    return body();
+    int * v, size;
+    char filename[40];
+
+    printf("\n\t--O ARQUIVO DEVE POSSUIR UM NUMERO");
+    printf("\n\t--INTEIRO POSITIVO POR LINHA.");
+    printf("\n\t--CASO O ARQUIVO NAO EXISTA, SERA");
+    printf("\n\t--CRIADO UM ARQUIVO COM NUMEROS");
+    printf("\n\t--ALEATORIOS.");
+    printf("\n\t--DIGITE O NOME DO ARQUIVO (default->list): ");
+    // scanf(" %s", filename);
+
+    size = count("list");
+    if(!size){
+        v = createRandomValuesFile(filename);
+        size = count(filename);
+    }else{
+        v = (int*)malloc(size * sizeof(int));
+    }
+    printf("\n----%d", size);
+    read(v, "list");
+
+    return body(v, size);
 }
 
 /**
@@ -33,13 +53,29 @@ int choice()
  * Corpo da aplicação, controlador das funções selecionadas.
  * @return true ou false.
  */
-int body()
+int body(int * v, int size)
 {
     int which = 234;
     int in;
     Tree_234 t_234;
     init(&t_234);
     RB_Tree t_rb;
+    Node_234 * find;
+
+    int i;
+    for(i=0; i<size; i++){
+        insert(&t_234, v[i]);
+    }
+
+
+
+    system("cls");
+    system("clear");
+
+    find = search_234_rm(t_234.root, 204);
+    printf("\n\n\t |%d|%d|%d|\n", find->data[0],find->data[1],find->data[2]);
+
+    navigation(which);
 
     while(1){
         printf("\n\n\t ESCOLHA UMA OPCAO: ");
@@ -48,12 +84,18 @@ int body()
                 printf("\n\tINSERIR ELEMENTO NA ARVORE\n");
                 printf("\n\tDIGITE UM NUMERO: ");
                 scanf("%d", &in);
-                Node_234 * n_234;
-                insert(&t_234, in);
-            break;
+                which == 234
+                    ? insert(&t_234, in)
+                    : ord_insert(&t_rb, in);
+                break;
             case 2:
-
-            break;
+                    printf("\n\tINSERIR ELEMENTO NA ARVORE\n");
+                    printf("\n\tDIGITE UM NUMERO: ");
+                    scanf("%d", &in);
+                    which == 234
+                            ? remove_234(&t_234, in)
+                            : remove_rb(&t_rb, in);
+                break;
 
             case 3:
                 which == 234
@@ -61,25 +103,27 @@ int body()
                 : print_rb(t_rb, 1);
             break;
             case 4:
-                if(which != 234) return 1;
+                if(which != 234){
+                    which = 234;
+                    printf("\n\t---RETORNANDO PARA 2-3-4 TREE");
+                    break;
+                 }
                 //converter para rubro negra
                 if(t_234.root){
                     t_rb = convert_234_rb(&t_234);
                     which = 0;
                 }else{
-                    printf("\n\tA ARVORE ESTA VAZIA. CONVERSAO ABORTADA.\n");
+                    printf("\n\t---A ARVORE ESTA VAZIA. CONVERSAO ABORTADA.\n");
                 }
                 break;
             case 5:
                 return 1;
             default:
-                printf("\nOPCAO INVALIDA!\n");
+                printf("\n\t---OPCAO INVALIDA!\n");
 
         }
         navigation(which);
     }
-
-    return 1;
 }
 
 /**
@@ -107,7 +151,8 @@ void navigation(int which)
     printf("\t|     1 - INSERIR ELEMENTO                                   |\n");
     printf("\t|     2 - REMOVER ELEMENTO                                   |\n");
     printf("\t|     3 - IMPRIMIR                                           |\n");
-    printf("\t|     4 - SAIR                                               |\n");
+    printf("\t|     4 - RETORNAR 2-3-4                                     |\n");
+    printf("\t|     5 - SAIR                                               |\n");
     printf("\t--------------------------------------------------------------\n");
     }
 }

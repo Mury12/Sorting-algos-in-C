@@ -88,6 +88,31 @@ int insert_elem(Node_234 * n, int data)
     }
     return r;
 }
+Node_234 * search_234_rm(Node_234 * root, int data)
+{
+    Node_234 * aux;
+    aux = root;
+    int i = 0;
+
+    if(!aux->childs[0]) return aux;
+
+    if(aux->childs && aux->fill == 1){
+        if(aux->parent->fill > 1){
+
+        }
+    }
+
+    for(i=0; i<CAP; i++){
+        if(aux->data[i] == -1 || data <= aux->data[i]){
+            break;
+        }
+    }
+    if(data > aux->data[i] && aux->childs[i+1]){
+        return search_234_rm(aux->childs[i+1], data);
+    }else{
+        return search_234_rm(aux->childs[i], data);
+    }
+}
 
 Node_234 * search_insert(Tree_234 * t, Node_234 *n, int data)
 {
@@ -126,24 +151,12 @@ Node_234 * search_insert(Tree_234 * t, Node_234 *n, int data)
     }
 }
 //Removes a node
-void remove_n(Tree_234 * t, int data);
-void remove_btree(Node_234 * n);
-void remove_rb(Node_234 * n);
-//Updates balance factor
-void updateBF(Node_234 * n, Tree_234 * t);
-//Balances a subtree
-void balance(Node_234 * n);
-//Swapp a with b
-void swap(Node_234 * a, Node_234 * b);
-//Copy a value to b;
-void copy(Node_234 * a, Node_234 * b);
 
-//Rotates left
-void rotateLeft(Node_234 * n);
-//Rotates right
-void rotateRight(Node_234 * n);
 
-//Prints a tree
+/**
+ * Interage com o algorítmo de
+ * impressão da arvore 234
+ */
 void print_t(Tree_234 t, int order)
 {
     printf("\n|---NO---| ->  |FILHO 01| - |FILHO 02| - |FILHO 03| - |FILHO 04| \n");
@@ -152,13 +165,13 @@ void print_t(Tree_234 t, int order)
     }else{
         print_n(t.root, 0);
     }
-    printf("\nAltura: %d\tElementos: %d\tTipo: %s\n", t.height, t.count, tree_type(&t));
+
+    printf("\n\t-------------------------------------------------------------");
+    printf("\n\t|           Altura: %d  Elementos: %d   Tipo: %s          |", t.height, t.count, tree_type(&t));
+    printf("\n\t-------------------------------------------------------------\n");
+
 }
-//Imprime um nó na tela
-//|PAI| -> |F0| - |F1| - |F2| - |F3|
-//|F0|  -> |f0| - |f1| - |f2| - |f3|
-//|f0|  -> |ff0| ...
-//|F1|  -> ...
+
 void print_n(Node_234 * n, int order)
 {
     int i=0, nc = get_num_childs(n);
@@ -293,6 +306,124 @@ Node_234 * split_node(Node_234 * aux)
     return n;
 }
 
+void remove_234(Tree_234 * t, int data)
+{
+    int status;
+    Node_234 *n = search_234_rm(t->root, data);
+    if(data != n->data[0] && data != n->data[1] && data != n->data[2]){
+        printf("\n\tELEMENTO NAO ENCONTRADO.\n");
+        return;
+    }
+    status = remove_234_node(n, data);
+    switch(status){
+        case 2:
+            t->height--;
+        break;
+    }
+    t->count--;
+
+}
+int remove_234_node(Node_234 * n, int data)
+{
+    int i = 0, idx=0, p_idx=0;
+    // while(i<CAP){
+    //     //posição do elemento
+    //     if(n->data[i] == data) idx = i;
+    //     //posição do pai
+    //     i++;
+    // }
+    idx = get_self_pos(n, data);
+    p_idx = get_parent_idx(n, idx);
+
+    if(!n->childs[0]){
+        if(!n->parent || n->fill > 1){
+            i=idx;
+            n->fill--;
+            while(i < n->fill){
+                n->data[i] = n->data[i+1];
+                i++;
+            }
+            n->data[n->fill] = -1;
+            return 1;
+        }else
+        if(n->parent && n->fill == 1){
+            n->data[idx] = -1;
+            //empresta rotaçao direita ou esquerda
+            if(data > n->parent->data[p_idx]){
+                int self = p_idx+1;
+                int lend, old, a, b;
+                Node_234 * left, *right;
+                left = n->parent->childs[self-1];
+                right = n->parent->childs[self+1];
+                //se ele for um vetor da direita, empresta da esquerda
+                if(left->fill > 1){
+                    //se o irmao da esquerda tiver mais de 1 elemento
+                    left->fill--;
+                    lend = left->data[left->fill];
+                    left->data[left->fill] = -1;
+                    old = n->parent->data[p_idx];
+                    n->parent->data[p_idx] = lend;
+                    n->data[idx] = old;
+                }else{
+                    //se o irmão da esquerda está com apenas 1, procura no da direita
+                    if(right && right->fill > 1){
+                        right->fill--;
+                        lend = right->data[0];
+                        right->data[0] = right->data[right->fill];
+                        right->data[right->fill] = -1;
+                        old = n->parent->data[p_idx+1];
+                        n->parent->data[p_idx+1] = lend;
+                        n->data[idx] = old;
+
+                        //Se nenhum dos lados tem espaço, faz-se o merge dos nodes
+                    }else{
+                        if(n->parent->fill>1){
+                            left = n->parent->childs[self-1];
+                            lend = n->parent->data[p_idx];
+                            insert_elem(left, lend);
+                            i=p_idx;
+                            while(i < n->parent->fill - 1){
+                                n->parent->data[i] = n->parent->data[i+1];
+                            }
+
+                        }else{
+
+                        }
+                        n->parent->data[n->parent->fill] = -1;
+                        n->parent->fill--;
+                        n->parent->childs[self] = null;
+                    }
+                }
+            }else{
+
+            }
+        }
+    }
+                printf("\n\t---removeu %d\n", data);
+
+}
+Node_234 * merge_nodes(Node_234 *a, Node_234* b)
+{
+    Node_234 * aux;
+    int c, d, e;
+    aux = a;
+
+
+
+
+}
+Node_234 * next_234(Node_234 * n)
+{
+    Node_234 * aux;
+    aux = n->childs[1];
+
+    while(aux->childs[0]){
+        aux = aux->childs[0];
+    }
+
+    return aux;
+}
+
 char * tree_type(Tree_234 *t)
 {
     if(t->tree == BTREE) return "BTREE";
@@ -308,4 +439,34 @@ int get_num_childs(Node_234 *n)
         i++;
     }
     return n_childs;
+}
+
+int get_parent_idx(Node_234 * self, int idx)
+{
+    int i=0;
+    if(self->parent){
+        while(self->data[idx] < self->parent->data[i]){
+            i++;
+        }
+    }
+    return i;
+}
+
+int get_self_pos(Node_234 * self, int data)
+{
+    int i=0;
+    while(i<CAP)
+    {
+        if(self->data[i] == data) return i;
+        i++;
+    }
+}
+
+int get_self_child_pos(Node_234 * self)
+{
+    int i=0;
+    while(i<=CAP){
+        if(self->parent->childs[i] == self) return i;
+        i++;
+    }
 }

@@ -22,9 +22,7 @@ int count(char filename[])
     int size = 0;
 
     f = fopen(filename, "r");
-
     if(!f){
-        fclose(f);
         return false;
     }
 
@@ -70,7 +68,6 @@ int read(int * v, char filename[40])
      * Encerra a função caso haja problemas ao abrir o arquivo.
      */
     if(!f){
-        fclose(f);
         return false;
     }
 
@@ -83,10 +80,6 @@ int read(int * v, char filename[40])
         fscanf(f, "%d", &v[i]);
         i++;
     }
-
-    /**
-     * Retorna o vetor e seu tamanho para a estrutura por referência.
-     */
 
     return true;
 }
@@ -129,10 +122,11 @@ int write(int *v, int size,  char filename[])
 // }
 
 
-int createRandomValuesFile(char filename[])
+int * createRandomValuesFile(char filename[])
 {
 
     FILE *f;
+    int *v;
     /**
      * @var size é o número de elementos que será inserido no arquivo.
      */
@@ -140,8 +134,11 @@ int createRandomValuesFile(char filename[])
     int i, val;
     srand(time(null));
 
-    printf("Quantos elementos? ");
+    printf("\n\tARQUIVO %s NAO EXISTE.\n ", filename);
+    printf("\tGERANDO UM NOVO ARQUIVO.\n");
+    printf("\tQUANTIDADE DE ELEMENTOS: ");
     scanf("%d", &size);
+    v = (int*)malloc(size * sizeof(int));
 
     f = fopen(filename, "w");
 
@@ -156,7 +153,7 @@ int createRandomValuesFile(char filename[])
          */
         val = rand()%100;
         fprintf(f, "%d", val);
-
+        v[i] = val;
         i != size-1? fprintf(f, "\n") : true;
     }
 
@@ -164,5 +161,5 @@ int createRandomValuesFile(char filename[])
 
     fclose(f);
 
-    return true;
+    return v;
 }

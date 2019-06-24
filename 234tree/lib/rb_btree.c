@@ -27,9 +27,11 @@ RB_Tree convert_234_rb(Tree_234 *t)
 
     check_234_tree(t);
     getchar();
+    getchar();
     printf("\n---CONVERSAO 234 -> RED BLACK\n");
 
     rb_t = walk_234_tree(t);
+    rb_t.count = t->count;
 
     printf("\n---CONVERSAO 234 -> RED BLACK CONCLUIDA.\n");
     return rb_t;
@@ -91,9 +93,6 @@ RB_Node * leaf_node(Node_234 * n)
     return rb_node;
 }
 
-Tree_234 * convert_rb_234(RB_Tree * t);
-Node_234 * make_234_node(RB_Node * n);
-
 //Varre os nós da arvore 234
 RB_Tree walk_234_tree(Tree_234 * t){
 
@@ -114,6 +113,7 @@ RB_Tree walk_234_tree(Tree_234 * t){
 
     //Posiciona os nós nos lugares corretos
     //de acordo com o numero de filhos do nó 234
+    //e ajusta as referencias
     switch(get_num_childs(t->root)){
         case 2:
             root->left = a[0];

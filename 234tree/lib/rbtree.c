@@ -110,20 +110,82 @@ void rb_fixup(RB_Tree * t, RB_Node * n)
 
     return;
 }
-//Insere o nó e retorna o indice
-int insert_elem_rb(RB_Node * n, int data);
 //Removes a node
-void remove_n_rb(RB_Tree * t, int data);
-void remove_btree_rb(RB_Node * n);
-void remove_rb_rb(RB_Node * n);
+/**
+ * Retira um nó com um conteudo data de uma árvore t.
+ */
+RB_Tree * remove_rb(RB_Tree * t, int data)
+{
+    if(!t->root) return t;
+    int root_val = t->root->data;
+    RB_Node *n = search_rb(t, data);
+    if(n){
+        if(n->color == BLK){
+            RB_Node *aux;
+            if(n != t->root){
+                aux = get_self_side(n) == LEFT
+                    ? n->parent->right
+                    : n->parent->left;
+                aux = !aux ? n->parent : aux;
+            }
+                t = remove_rb_node(t, n);
+                if(data != root_val){
+                    rb_fixup(t, aux);
+                }
+        }else{
+            t = remove_rb_node(t, n);
+        }
+        t->count--;
+    }else{
+        printf("\n\t---VALOR NAO ENCONTRADO.\n");
+    }
+    return t;
+}
+
+/**
+ * Remove um nó n da árvore t
+ */
+RB_Tree * remove_rb_node(RB_Tree *t, RB_Node *n)
+{
+    RB_Node *aux = n;
+    int data = n->data;
+
+    printf("\n\t---EXCLUINDO NO %d \n", n->data);
+
+    if(!leaf(n)){
+
+        if(aux->left){
+            aux = aux->left;
+            while(aux->right){
+                aux = aux->right;
+            }
+        }else{
+            aux->parent->left = aux->right;
+        }
+        if(get_self_side(aux) == LEFT){
+            aux->parent->left = null;
+        }else{
+            aux->parent->right = null;
+        }
+        swap_rb_nodes(n, aux);
+
+        free(aux);
+    }else{
+        if(n->parent->data > n->data){
+            aux->parent->left = aux->left ? aux->left : null;
+        }else{
+            aux->parent->right = aux->left ? aux->left : null;
+        }
+        free(n);
+    }
+
+
+    printf("\n\t---NO COM VALOR %d REMOVIDO. \n", data);
+
+    return t;
+}
+
 //Updates balance factor
-void updateBF_rb(RB_Node * n, RB_Tree * t);
-//Balances a subtree
-void balance_rb(RB_Node * n);
-//Swapp a with b
-void swap_rb(RB_Node * a, RB_Node * b);
-//Copy a value to b;
-void copy_rb(RB_Node * a, RB_Node * b);
 
 //Rotates left
 void rotateLeft_rb(RB_Tree * t, RB_Node * n)
@@ -193,7 +255,13 @@ void print_rb(RB_Tree t, int order)
 {
     printf("\nRaiz: %d %s", t.root->data, get_node_color(t.root));
     print_n_rb(t.root, order);
-    printf("\n");
+    printf("\n\n");
+    print_n_rb(t.root, 4);
+    printf("\n\n");
+    printf("\t-------------------------------------------------------------\n");
+    printf("\t|         RED-BLACK  RAIZ: %d %s   ELEMENTOS: %d           |\n", t.root->data, get_node_color(t.root), t.count);
+    printf("\t|                  (X)->RED [X]->BLACK                      |\n");
+    printf("\t-------------------------------------------------------------\n");
 }
 //Recursively prints the nodes
 void print_n_rb(RB_Node * n, int order)
@@ -235,10 +303,15 @@ void print_n_rb(RB_Node * n, int order)
             print_n_rb(n->right, order);
             printf(" \n %d - %s", n->data, get_node_color(n));
             break;
+        case 4:
+            print_n_rb(n->left, order);
+            if(get_color_code(n) == BLK)
+            printf("[%d] ", n->data);
+            else
+            printf("(%d) ", n->data);
+            print_n_rb(n->right, order);
     }
 }
-//Gets the tree height
-void getHeight_rb(RB_Tree * t);
 
 //Alocates a node
 RB_Node * allocate_rb(int data)
@@ -253,13 +326,46 @@ RB_Node * allocate_rb(int data)
     return n;
 }
 //Searches a value in the tree
-RB_Node * search_rb(RB_Tree * t, int data);
-//Searches the node
-RB_Node * search_n_rb(RB_Node * n, int data);
+RB_Node * search_rb(RB_Tree *t, int data)
+{
+    RB_Node *n = t->root;
+    while(n->data != data){
+        if(data > n->data && n->right){
+            n = n->right;
+        }else{
+            if(n->left){
+                n = n->left;
+            }else{
+                return null;
+            }
+        }
+    }
+    return n;
+}
 //Gets the bigger value
-RB_Node * maxval_rb(RB_Tree * t);
+RB_Node * maxval_rb(RB_Tree * t)
+{
+    RB_Node * max;
+    max = t->root;
+
+    while(max->right)
+    {
+        max = max->right;
+    }
+    return max;
+}
 //Gets the lwoest value
-RB_Node * minval_rb(RB_Tree * t);
+RB_Node * minval_rb(RB_Tree * t)
+{
+    RB_Node * min;
+    min = t->root;
+
+    while(min->left)
+    {
+        min = min->right;
+    }
+    return min;
+}
 //Next value
 RB_Node * next_rb(RB_Node * n);
 //Tracks the next node value
@@ -268,11 +374,21 @@ RB_Node * find_next_rb(RB_Node * n);
 RB_Node * previous_rb(RB_Node * n);
 //Tracks the previous node value
 RB_Node * find_previous_rb(RB_Node * n);
-//Promotes a child node one level above
-RB_Node * promoteChild_rb(RB_Node * n);
 
-RB_Node * split_node_rb(RB_Node * aux);
-RB_Node * search_insert_rb(RB_Tree * t, RB_Node *n, int data);
+RB_Node * swap_rb_nodes(RB_Node * n, RB_Node * t)
+{
+    int aux;
+
+    aux = n->data;
+
+    // printf("\n n %d t %d", n->data, t->data);
+
+    n->data = t->data;
+    t->data = aux;
+    // printf("\n n %d t %d", n->data, t->data);
+
+    return t;
+}
 
 char * get_node_color(RB_Node * n)
 {
@@ -308,4 +424,13 @@ void change_color(RB_Node * n, int color)
 {
     n ? n->color = color : 0;
     // printf("\n\t\t %d color changed to %s\n", n->data, get_node_color(n));
+}
+
+/**
+ * Retorna 1 se o nó é folha ou 0 caso contrário
+ */
+int leaf(RB_Node *n)
+{
+    if(n->left || n->right) return 0;
+    return 1;
 }

@@ -18,7 +18,7 @@ int choice();
  * Corpo da aplicação, controlador das funções selecionadas.
  * @return true ou false.
  */
-int body();
+int body(int * v, int size);
 
 /**
  * Mostra o menu de navegação para a escolha das opções.

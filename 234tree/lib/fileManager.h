@@ -33,7 +33,7 @@ int write(int *v, int size, char filename[]);
  * @param filename é o nome do arquivo a ser criado
  * @returnstrue ou false
  */
-int createRandomValuesFile(char filename[]);
+int * createRandomValuesFile(char filename[]);
 
 // void writeProfilingResults(Data *cmp, char name[40]);
 
