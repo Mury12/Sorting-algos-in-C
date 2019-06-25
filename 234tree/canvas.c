@@ -23,9 +23,9 @@ int start()
     printf("\n\t--CRIADO UM ARQUIVO COM NUMEROS");
     printf("\n\t--ALEATORIOS.");
     printf("\n\t--DIGITE O NOME DO ARQUIVO (default->list): ");
-    // scanf(" %s", filename);
+    scanf(" %s", filename);
 
-    size = count("list");
+    size = count(filename);
     if(!size){
         v = createRandomValuesFile(filename);
         size = count(filename);
@@ -33,7 +33,7 @@ int start()
         v = (int*)malloc(size * sizeof(int));
     }
     printf("\n----%d", size);
-    read(v, "list");
+    read(v, filename);
 
     return body(v, size);
 }
