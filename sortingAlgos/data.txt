@@ -61,3 +61,74 @@ int main()
     t = remove_elemento(v, t);
     printa_pilha(v);
 }
+
+-------------------------------FILA
+
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 10
+
+void inicia_fila(int v[]){
+
+    int i = 0;
+    while(i < MAX_SIZE){
+        v[i] = -1;
+        ++i;
+    }
+}
+
+
+int insere_elemento(int v[], int n, int t){
+
+    if( t == MAX_SIZE ){
+        printf("\n\t A FILA TA CHEIA");
+        return;
+    }
+
+
+    v[t] = n;
+    return (t+1);
+
+
+}
+
+void printa_pilha(int v[], int s){
+
+    int i = 0;
+    printf("\n");
+    for (i=s; i<MAX_SIZE; i++){
+
+        if(v[i] == -1) break;
+        printf(" %d ", v[i]);
+    }
+}
+
+int remove_elemento(int v[], int s, int t){
+    if(s == t){
+        s = t = 0;
+        printf("\t\t FILA VAZIA");
+        return;
+    }
+    printf("\nRemovendo %d\n", v[s]);
+    v[s] = -1;
+
+    return (s+1);
+}
+
+int main()
+{
+    int t = 0;
+    int s = 0;
+    int v[MAX_SIZE];
+    inicia_fila(v);
+    t = insere_elemento(v, 1, t);
+    t = insere_elemento(v, 2, t);
+    t = insere_elemento(v, 3, t);
+    t = insere_elemento(v, 4, t);
+    t = insere_elemento(v, 5, t);
+    printa_pilha(v, s);
+    s = remove_elemento(v, s, t);
+    s = remove_elemento(v, s, t);
+    printa_pilha(v, s);
+}
+
