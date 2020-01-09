@@ -1,10 +1,63 @@
-45
-62
-98
-89
-47
-59
-72
-82
-45
-18
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_SIZE 10
+
+void inicia_pilha(int v[]){
+
+    int i = 0;
+    while(i < MAX_SIZE){
+        v[i] = -1;
+        ++i;
+    }
+}
+
+
+int insere_elemento(int v[], int n, int t){
+
+    if( t == MAX_SIZE ){
+        printf("\n\t A PILHA TÁ CHEIA CARAIO");
+        return;
+    }
+
+
+    v[t] = n;
+    return (t+1);
+
+
+}
+
+void printa_pilha(int v[]){
+
+    int i = 0;
+    printf("\n");
+    for (i=0; i<MAX_SIZE; i++){
+
+        if(v[i] == -1) break;
+        printf(" %d ", v[i]);
+    }
+}
+
+int remove_elemento(int v[], int t){
+    if(t == 0){
+        printf("\t\t PILHA VAZIA");
+        return;
+    }
+    v[t-1] = -1;
+    return (t-1);
+}
+
+int main()
+{
+    int t = 0;
+    int v[MAX_SIZE];
+    inicia_pilha(v);
+    t = insere_elemento(v, 1, t);
+    t = insere_elemento(v, 2, t);
+    t = insere_elemento(v, 3, t);
+    t = insere_elemento(v, 4, t);
+    t = insere_elemento(v, 5, t);
+    printa_pilha(v);
+    t = remove_elemento(v, t);
+    t = remove_elemento(v, t);
+    printa_pilha(v);
+}
